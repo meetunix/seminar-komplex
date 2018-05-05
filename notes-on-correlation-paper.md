@@ -1,5 +1,3 @@
-#Quelle- Notizen zum Seminar SoSe 2018
-
 ## Correlation and consolidation of Distributed Logging Data in Enterprise Clouds
 
 
@@ -70,11 +68,70 @@ Danach folgt der **MSG** Teil:
 TAG: Programm welches die Nachricht generiert hat. (kann variieren zb PRG/PID)
 CONTENT: Die tatsächliche LOG-Nachricht
 
-    * Speicherung in Logdateien für verteilte Systeme -> zentrale Ablage von Logs
-    * BSD-Style Syslog verwendet UDP
-    ** Für zentralisierte INfrastruktur ist eine Sendung mittels TCP/TLS besser
+* Speicherung in Logdateien für verteilte Systeme -> zentrale Ablage von Logs
+* BSD-Style Syslog verwendet UDP
+** Für zentralisierte Infrastruktur ist eine Sendung mittels TCP/TLS besser
 
-Verbesserungen bringt RFC **RFC 3164**
+Verbesserungen bringt RFC **RFC 5424**:
+* **PRI** ist genauso kodiert, aber nun Teil des **HEADER**. Zudem zusätzlich:
+* **PID**
+* **MESSAGE-ID**
+* **TIMESTAMP** nach RFC 3339
+* Und das wichtigste: **Strukturierte Daten**
+
+**EXAMPLE**
+
+    <165>1 2003-10-11T22:14:15.003Z mymachine.example.com
+           evntslog - ID47 [exampleSDID@32473 iut="3" eventSource=
+           "Application" eventID="1011"] BOMAn application
+           event log entry...
+
+Software mit RFC 5425 unterstützung: *syslog-ng* und *rsyslog*
+
+**Das Problem ist allerdings:**
+* Die extreme Menge und Größe der anfallenden Log-Daten
+* Einführung neuer Strukturen (vgl. RFC 5424)
+
+--> Anmerkung: HIer noch auf alternativen eingehen:
+* zentrale Logserver mit Monitoring
+** Menge an Daten kann unnutzbar werden
+
+* relationale Datenbanken (SQL-Only)
+** Struktur der Daten muss zur Erstellung der Datenbank bekannt sein
+
+Das einzige System was diesen Anforderungen gerecht wird: NoSQL
+* Speicherung von enormen Mengen an strukturierten Daten (KEY->VAL)
+* Strukturierung der Daten kann variieren
+
+**NoSQL:**
+Im Gegensatz zu SQL Datenbanken, wird bei NoSQL-Datenbanken kein Schema oder ein
+minimales Schema angelegt, das erlaubt die Änderunge der Structur zu jeder Zeit.
+Ergo, perfekt um Log-Daten für eine gewisse Zeit zu speichern.
+Die Daten sind wohlformatiert abgelegt und die KEY->VAL Paare unterscheiden
+sich lediglich nach LOG-Quelle.
+Zudem lassen sich NoSQL-Lösungen über hunderte von Systemen redundant skalieren.
+Da bei NoSQL allerdings die performance und Ausfallsicherheit im Vordergrund steht,
+ist nicht sichergestellt, das bei jeder NoSQL-Instanz die aktuellsten Daten vorhanden
+sind.
+
+Es gibt eine VIelzahl an Implementierungen von NoSQL, alle mit speziellen Zielen:
+
+Es lassen sich drei Typen von NoSQL-IMplekentierungen identifizieren:
+
+1. **Key-Value**:
+** Speicherung von untrukturierten Daten
+** Daten werden nicht interpretiert
+** Hochperformant
+** einfache API (insert, delete, lookup)
+** Keine Suche in BLOBS
+2. **extensible record stores/column-oriented datastores**
+** Speichert verwandte Daten in ein Zeilen und Spalten - Orientiertem System ab
+
+
+
+
+
+
 
 
 
