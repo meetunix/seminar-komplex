@@ -1,7 +1,7 @@
-## Correlation and consolidation of Distributed Logging Data in Enterprise Clouds
+# Correlation and consolidation of Distributed Logging Data in Enterprise Clouds
 
 
-### Abstract
+## Abstract
 
 AUfgrund von aktuellen Entwicklungen wie CLoud-Computing und der steigenden Anzahl
 von Anwendungen und Systemen ssteigt auch die Menge an Logdateien rapide an.
@@ -17,7 +17,7 @@ und KOrreltationstechniken um Anomalien (SECURITY!) zu erkennen.
 Es wird die speziellen ANforderungen presentiert um mit dieses hochskalierbaren Logsystem
 umzugehen, eben in einer hochverfügbaren Umgebnug mit dynamischer Infrastruktur.
 
-# Introduction
+## Introduction
 
 * schnelle entwicklung von Virtualisierungsumgebiungen
 * speziell Cloud-COmputing: schnelle Bereitstellung von SaaS, Iaas ... 
@@ -44,7 +44,7 @@ DIe IETF arbeitet allerdings an einer Lösung: [3]
 Grundlage von [3] ist **Syslog**, was auch die de-facto standard in unixoiden Umgebungen ist.
 Zusätzlich ist kann eine strukturierte Speichjerung in NoSQL Datenbanken erfolgen.
 
-## Logdaten Aggreagation und KOnsolidierung mit syslog
+### Logdaten Aggreagation und KOnsolidierung mit syslog
 
 * de-facto standart
 * keine Standardisierung des Protokolls
@@ -112,20 +112,51 @@ sich lediglich nach LOG-Quelle.
 Zudem lassen sich NoSQL-Lösungen über hunderte von Systemen redundant skalieren.
 Da bei NoSQL allerdings die performance und Ausfallsicherheit im Vordergrund steht,
 ist nicht sichergestellt, das bei jeder NoSQL-Instanz die aktuellsten Daten vorhanden
-sind.
+sind (ACID) - .
 
 Es gibt eine VIelzahl an Implementierungen von NoSQL, alle mit speziellen Zielen:
 
-Es lassen sich drei Typen von NoSQL-IMplekentierungen identifizieren:
+Es lassen sich drei Typen von NoSQL-Implekentierungen identifizieren:
 
 1. **Key-Value**:
-** Speicherung von untrukturierten Daten
-** Daten werden nicht interpretiert
-** Hochperformant
-** einfache API (insert, delete, lookup)
-** Keine Suche in BLOBS
+* Speicherung von untrukturierten Daten
+* Daten werden nicht interpretiert
+* Hochperformant
+* einfache API (insert, delete, lookup)
+* Keine Suche in BLOBS
+* SKalierung sehr einfach möglich
+
 2. **extensible record stores/column-oriented datastores**
-** Speichert verwandte Daten in ein Zeilen und Spalten - Orientiertem System ab
+* Speichert verwandte Daten in ein Zeilen und Spalten - orientiertem System ab
+* Skalierbarkeit wird erreicht, durch
+** Durch das Teilen von Zeilen in *shards* durch ihren PK
+** Durch das Teilen von Spalten in Spaltengruppen
+* Dadurch kann das "schema" beliebig erweitert werden
+
+3. **document-based data stores**
+* document: Eine Menge an Objekten, wobei jedes unterschiedliche Anzahl an Attributen haben darf
+* Neue Objecte dürfen jeder Zeit angelegt werden und sich in Anzahl und Typ ihrer
+KEY-VAL paare unterscheiden.
+* Durch Teilen von Objekten auch hier Skalierung möglich
+* Volltextsuche
+
+Durch zusätzliche Anwendung von Korrelierungstechniken könnnen Syslogdaten
+bis zu 99% reduziert werden [23]. Es werden nur die Daten dauerhaft aufgehoben, die
+relevant für auswertungen sind.
+
+## IV Anforderungen für die Korrelation von Logdaten
+
+In den folgenden Anschnitt wird eine Vorgehensweise beschrieben um die Evaluierung
+der Logmedlung-Relevanz zu automatisieren und die Logdatenmenge zu Reduzieren.
+
+Zudem wird eine Methode vorgestellt, um wichtige Eventtypen zu identifizieren um
+eine Korrellation und KOnsoliedeirung durchzuführen.
+
+### A. Correlating Ditributed Logs in Enterprose Clouds
+
+
+
+
 
 
 
