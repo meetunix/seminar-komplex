@@ -1,0 +1,26 @@
+*.log
+*.swp
+
+#some packages
+*.7z
+*.dmg
+*.gz
+*.iso
+*.jar
+*.rar
+*.tar
+*.zip
+
+*.tmp
+*.temp
+
+#latex
+*.aux
+*.backup
+*.nav
+*.snm
+*.toc
+*.out
+
+
+
