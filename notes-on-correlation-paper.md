@@ -1,4 +1,5 @@
-# Correlation and consolidation of Distributed Logging Data in Enterprise Clouds
+#Konspekt zum paper:
+#Correlation and consolidation of Distributed Logging Data in Enterprise Clouds
 
 
 ## Abstract
@@ -164,15 +165,113 @@ daran ist der Sysadmin interessiert.
 ### B. Consolidating Logging Data from Distributed Services
 
 Das zweite große Ziel ist die Nummer an Nachtrichten zu redizueren, welche
-dauerhaft in Elasticsearch vorgehalten werden. Dies führt zu einer schnelleren Verarbeitung
-und Anayse der Daten. Allerdings gehen dadurch Kontextinformationen verloren, daher
-sind einfache consolidierungmechanismen nicht nützlich (?)
+dauerhaft in Elasticsearch vorgehalten werden. Dies führt zu einer schnelleren
+Verarbeitung und Anayse der Daten. Allerdings gehen dadurch Kontextinformationen
+verloren, daher sind einfache Konsolidierungmechanismen nicht nützlich (?)
+
+Das Ziel ist daher identische oder Serien von Events zu gruppieren und daraus
+neue Lognacrichten zu generieren. Die neuen Syslog-Meldungen beinhalten eine
+kompakte Repräsentation der Daten. Die initialen Daten können so verworfen werden.
+
+Am Beispiel SSH-Brute-Force:
+
+* Millionen von security-event Messages werden zu einer hochpriorisierten Nachricht
+** Sysadmin weiß über das Angriff bescheid
+
+Beispiel HTTP-Loadbalancer
+
+* viele http-server liefern Logs an zentralen Log-Server aus
+** Einzelne Logs müssen Aggregiert werden -> eine neue Log-Nachricht
+*** z.B. access count per Timeslot
+
+**Es existieren correlation engines: Drools**
+
+### C. Identifying logging events of interest
+
+Nachrichten identifizieren die zu einem speziellen Event gehören
+
+* Logdatenanalyse 
+** RDTool -> Holt-Winters Aberrant Behavior Detection [28].
+*** Entdeckt abweichendes Verhalten 
+
+BILD EINFÜGEN!! (DEMO??? Eher nicht!)
+
+
+## V Implementation og Log Correlation and Consolidation in CLoud Environments
+
+### A. Mode of Operation
+
+1. Zentraler Syslog: rsyslog
+** empfängt und normalisiert syslog messages
+** Normalisierung mittels **liblognorm**
+
+#### liblognorm
+
+**Ziel:** 
+Gleiche Events die verschieden codiert aus verschiedenen Quellen stammen
+identifizieren und "Verbinden" und
+Identifizierung unterschiedlicher Nachrichten mit der gleichen Bedeutung zur
+Korrelierung, dazu werden eindeutige Tags der original Syslog-Meldung hinzugefügt.
+
+A. Normalisierung: die tags: SSHFAILURE, SSHFAILURE werden speziellen Events zugeordnet.
+
+**Beispiel einer Regelstruktur:**
+
+        rule=SSHSUCCESS : Accepted password for %user:
+        word% from %ip:ipv4% port %port : number% %protocol:word%
+        
+        rule=SSHFAILURE : Failed password for %user:
+        word% from %ip:ipv4% port %port : number% %protocol:word%
+        
+        rule=SSHFAILURE : Failed password for invalid user %user:
+        word% from %ip:ipv4% port %port : number% %protocol:word%
+
+B. Serialisierung mithilfe von JSON (JavaScript Object Notation) und Weiterleitung zum rsyslog output-Modul und dort zur Korrelations-Software.
+
+        {
+            ”data”: {
+                ”protocol”:”ssh2”,
+                ”port” : ”54548”,
+                ”ip”: ”10.0.23.4”,
+                ”user”: ”root”
+            } ,
+            ”time”:”2014−01−29T16:06:00.000”,
+            ”host”:”test.example.com”,
+            ”facility”:”auth”,
+            ”severity”:”info”,
+            ”program” :”sshd ”,
+            ”message”:”Failed password for root from
+            10.0.23.4 port 54548 ssh2”,
+            ”tags” : [”SSHFAILURE”]
+        }
+
+Mithilfe dieser Daten kann die Korrelations-Software [1] die Meldungen analysieren und an
+Elasticsearch weiterleiten.
+Nochmal: Die Korrelations-Software basiert auf der *Complex Event Processing (CEP) Engine Drools Fusion*
+
+Drools hält alle Events die zu einer Regel gehören in einem MEM-Cache, andere Nachrichten
+werden verworfen. Alle Nachrichten die zu einer Regel gehören werden korreliert, mit
+einem FLAG versehen (das die erfolgreiche Korrelierung anzeigt) und einem Verweis auf
+die Originalnachticht und in Elasticsearch gespeichert.
+
+In Elasticsearch kann dann periodisch nach erfolgreichen Korrelationen gesucht
+werden.
+
+2. **Drools Fusion** als Korrelation und Konsolidierung
+
+Mithilfe von *Drools Fusion* kann man zeitliche Schlussfolgerungen folgern, 
+dazu werden Regeln erstellt, die spezielle Events, durch eine zeitliche Folge von
+Syslog-Nachrichten, beschreiben.
+
+Erinnerung-Ziel: Den einen erfolgreichen Login auf einem System entdecken, zwischen
+millionen gescheiterten Login-Versuchen.
+
+A. Entdeckung einer Brute-Force-Attacke
 
 
 
 
-
-
+3. Abspeichern der Daten mittel elasticsearch
 
 
 
