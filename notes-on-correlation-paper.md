@@ -158,7 +158,18 @@ Am Beispiel einer Brute-Force Attacke auf einen SSH-Server:
 Unter Millionen von Versuchen sollen die herausgefunden werden, die zum erfolgreichen
 Login führen.
 
-Zwischen all dem Noise, soll sozusagen die Stecknadel im Heuhaufen gefinden werden.
+Zwischen all dem Noise, soll sozusagen die Stecknadel im Heuhaufen gefinden werden, denn
+daran ist der Sysadmin interessiert.
+
+### B. Consolidating Logging Data from Distributed Services
+
+Das zweite große Ziel ist die Nummer an Nachtrichten zu redizueren, welche
+dauerhaft in Elasticsearch vorgehalten werden. Dies führt zu einer schnelleren Verarbeitung
+und Anayse der Daten. Allerdings gehen dadurch Kontextinformationen verloren, daher
+sind einfache consolidierungmechanismen nicht nützlich (?)
+
+
+
 
 
 
