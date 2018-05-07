@@ -154,6 +154,11 @@ eine Korrellation und KOnsoliedeirung durchzuführen.
 
 ### A. Correlating Ditributed Logs in Enterprose Clouds
 
+Am Beispiel einer Brute-Force Attacke auf einen SSH-Server:
+Unter Millionen von Versuchen sollen die herausgefunden werden, die zum erfolgreichen
+Login führen.
+
+Zwischen all dem Noise, soll sozusagen die Stecknadel im Heuhaufen gefinden werden.
 
 
 
