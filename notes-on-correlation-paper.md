@@ -13,7 +13,7 @@ relevante Daten sollen ausgewertet werden.
 
 IN diesem Paper wird ein Prototyp vorgestellt unter Verwendung eines NoSQL Storage-Backe-Ends.
 Die Konsolidierung von Daten impliziert auch strategien zur minimierung von Langzeitspeicherung
-und KOrreltationstechniken um Anomalien (SECURITY!) zu erkennen.
+und Korreltationstechniken um Anomalien (SECURITY!) zu erkennen.
 
 Es wird die speziellen ANforderungen presentiert um mit dieses hochskalierbaren Logsystem
 umzugehen, eben in einer hochverfügbaren Umgebnug mit dynamischer Infrastruktur.
@@ -269,14 +269,87 @@ millionen gescheiterten Login-Versuchen.
 A. Entdeckung einer Brute-Force-Attacke
 
 * Um eine Attacke zu entdecken, muss zuvor eine Brute-Force-Attacke identifiziert werden
-    * Drools-Regel *SSH brute-force attempt* mit Bezug auf Syslog-Flag *SSHFAILURE*
-    *  
+    * Drools-Regel *SSH brute-force attempt* mit Bezug auf Syslog-tag *SSHFAILURE*
+    * basierend auf *username* und *host* bildunge mehrer *in-memory-queues*
+        * bei mehr als 10 Versuchen innerhalb einer Minute -> Brute-Force Angriff
 
+* Drools-Regel (1) fasst alle Diese Meldungen zu einer neuen Syslog-Meldung zusammen
+    * facility=*security* und severity=*warning*, Message=*SSH brute-force attack*
+    * neues Syslog-tag=**BRUTEFORCE**
 
+        rule ”SSH brute−force attempt”
+        no−loop
+        when
+            Message (   $host:host,
+                        $user:data[”user”])
+            $atts: CopyOnWriteArrayList(size >= 10)
+                from collect(
+                    Message(    tags contains”SSHFAILURE”,
+                                host == $host,
+                                data[”user” ] == $user)
+                    over window : time (1m))
+        then
+            Message last = (Message) $atts.get($atts.size( )−1) ;
+
+            for (Object f: $atts) {
+                retract ( f ) ;
+        }
+
+            insert (messageFactory(last)
+                . setTime(last.getTime( ))
+                . setSeverity(Message.Severity.WARNING)
+                . setFacility(Message.Facility.SECURITY)
+                . setMessage(”SHH brute−force attack” +
+                    ”for @{data.user} from @{data.ip}”)
+                . addTag (”BRUTEFORCE”)
+                . message( )) ;
+        end
+
+* Drools-Regel (2) *Successful SSH brute-force attack*
+** trifft zu, wenn innerhalb einer Brute-Force-Attacke eine Login gelingt
+** bezieht sich auf Syslog-tag *SSHSUCCESS* innerhalb von 10s nach den tags: *SSHFAILURE* und *BRUTEFORCE* + selber *username*.
+*** severity=*emergency* und tSyslog-tag: *INCIDENT*
+
+        r u l e ” S u c c e s s f u l SSH b r u t e −f o r c e a t t a c k ”
+        no−l o o p
+        when
+            $ a t t : Message ( t a g s c o n t a i n s ”SSHFAILURE ” ,
+                                t a g s c o n t a i n s ”BRUTEFORCE” ,
+                                $host : host ,
+                                $user : data [” user ”])
+            $ s u c : Message ( h o s t == $ h o s t ,
+                                d a t a [ ” u s e r ” ] == $ u s e r ,
+                                t a g s c o n t a i n s ”SSHSUCCESS ” ,
+                                t h i s f i n i s h e s [10 s ] $ a t t )
+        then
+            $ a t t . addTag ( ” INCIDENT ” ) ;
+            $ a t t . s e t S e v e r i t y ( S e v e r i t y .EMERGENCY) ;
+            $ a t t . setMessage ( $ a t t . getMessage ( ) + ” [ bruteforce ]”) ;
+        update ( $ a t t ) ;
+        end
+
+        [ABBILDUNG: Mögliche Anzeige S.8(46)]
+
+Die Daten können jetzt persistent gespeichert werden und/oder es kann ein Event an
+an **Icinga/Nagios** gesendet werden.
 
 
 3. Abspeichern der Daten mittel elasticsearch
 
+## VI Log-Correlation in an Cloud-Environment
+
+* limitierender Faktor ist Drools in-memory-engine
+
+**mögliche Lösungen:**
+* mehrere Drools-Instanzen die mittels *ditributed memory* gelinked sind
+** Keine OpenSource-Lösung verfügbar
+* Jede Applikation sendet ihre Logs zu einer dedizierten DROOL-VM
+** Korrelierbare Applikationen senden ebenfalls zu einer dedizierten DROOL-VM
+
+Die Korrelation erst über Elasticsearch-Abfragen zu realisieren scheint nicht sinnvoll
+sein sein, da bei LOG-Bursts die Auswertung zu lange dauert.
+
+        [BILD Seite 9 (47)]
 
 
 
