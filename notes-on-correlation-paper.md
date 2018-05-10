@@ -181,8 +181,8 @@ Am Beispiel SSH-Brute-Force:
 Beispiel HTTP-Loadbalancer
 
 * viele http-server liefern Logs an zentralen Log-Server aus
-** Einzelne Logs müssen Aggregiert werden -> eine neue Log-Nachricht
-*** z.B. access count per Timeslot
+    * Einzelne Logs müssen Aggregiert werden -> eine neue Log-Nachricht
+        * z.B. access count per Timeslot
 
 **Es existieren correlation engines: Drools**
 
@@ -191,8 +191,8 @@ Beispiel HTTP-Loadbalancer
 Nachrichten identifizieren die zu einem speziellen Event gehören
 
 * Logdatenanalyse 
-** RDTool -> Holt-Winters Aberrant Behavior Detection [28].
-*** Entdeckt abweichendes Verhalten 
+    * RDTool -> Holt-Winters Aberrant Behavior Detection [28].
+        * Entdeckt abweichendes Verhalten 
 
 BILD EINFÜGEN!! (DEMO??? Eher nicht!)
 
@@ -259,7 +259,7 @@ werden.
 
 2. **Drools Fusion** als Korrelation und Konsolidierung
 
-Mithilfe von *Drools Fusion* kann man zeitliche Schlussfolgerungen folgern, 
+Mithilfe von *Drools Fusion* kann man zeitliche Schlussfolgerungen ziehen, 
 dazu werden Regeln erstellt, die spezielle Events, durch eine zeitliche Folge von
 Syslog-Nachrichten, beschreiben.
 
@@ -267,6 +267,10 @@ Erinnerung-Ziel: Den einen erfolgreichen Login auf einem System entdecken, zwisc
 millionen gescheiterten Login-Versuchen.
 
 A. Entdeckung einer Brute-Force-Attacke
+
+* Um eine Attacke zu entdecken, muss zuvor eine Brute-Force-Attacke identifiziert werden
+    * Drools-Regel *SSH brute-force attempt* mit Bezug auf Syslog-Flag *SSHFAILURE*
+    *  
 
 
 
