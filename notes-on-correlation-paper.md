@@ -1,5 +1,5 @@
-#Konspekt zum paper:
-#Correlation and consolidation of Distributed Logging Data in Enterprise Clouds
+# Konspekt zum paper:
+# Correlation and consolidation of Distributed Logging Data in Enterprise Clouds
 
 
 ## Abstract
