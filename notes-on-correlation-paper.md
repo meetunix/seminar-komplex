@@ -310,22 +310,22 @@ A. Entdeckung einer Brute-Force-Attacke
 ** bezieht sich auf Syslog-tag *SSHSUCCESS* innerhalb von 10s nach den tags: *SSHFAILURE* und *BRUTEFORCE* + selber *username*.
 *** severity=*emergency* und tSyslog-tag: *INCIDENT*
 
-        r u l e ” S u c c e s s f u l SSH b r u t e −f o r c e a t t a c k ”
-        no−l o o p
+        rule ”Successful SSH brute−force attack”
+        no−loop
         when
-            $ a t t : Message ( t a g s c o n t a i n s ”SSHFAILURE ” ,
-                                t a g s c o n t a i n s ”BRUTEFORCE” ,
-                                $host : host ,
-                                $user : data [” user ”])
-            $ s u c : Message ( h o s t == $ h o s t ,
-                                d a t a [ ” u s e r ” ] == $ u s e r ,
-                                t a g s c o n t a i n s ”SSHSUCCESS ” ,
-                                t h i s f i n i s h e s [10 s ] $ a t t )
+            $ att: Message ( tags contains ”SSHFAILURE” ,
+                                tags contains ”BRUTEFORCE”,
+                                $host: host ,
+                                $user: data [”user”])
+            $ suc: Message ( host == $host,
+                                data [”user” ] == $user,
+                                tags contains ”SSHSUCCESS” ,
+                                this finishes[10 s] $att)
         then
-            $ a t t . addTag ( ” INCIDENT ” ) ;
-            $ a t t . s e t S e v e r i t y ( S e v e r i t y .EMERGENCY) ;
-            $ a t t . setMessage ( $ a t t . getMessage ( ) + ” [ bruteforce ]”) ;
-        update ( $ a t t ) ;
+            $att.addTag(”INCIDENT”);
+            $att.setSeverity(Severity.EMERGENCY);
+            $att.setMessage($att.getMessage( ) + ”[bruteforce]”) ;
+        update ($att) ;
         end
 
         [ABBILDUNG: Mögliche Anzeige S.8(46)]
@@ -338,18 +338,134 @@ an **Icinga/Nagios** gesendet werden.
 
 ## VI Log-Correlation in an Cloud-Environment
 
+### A. Scalability in an OpensTack-Environment
+
 * limitierender Faktor ist Drools in-memory-engine
 
 **mögliche Lösungen:**
 * mehrere Drools-Instanzen die mittels *ditributed memory* gelinked sind
 ** Keine OpenSource-Lösung verfügbar
+** für große Enterprise-Clouds empfehlenswert
+
+
 * Jede Applikation sendet ihre Logs zu einer dedizierten DROOL-VM
 ** Korrelierbare Applikationen senden ebenfalls zu einer dedizierten DROOL-VM
 
 Die Korrelation erst über Elasticsearch-Abfragen zu realisieren scheint nicht sinnvoll
 sein sein, da bei LOG-Bursts die Auswertung zu lange dauert.
 
-        [BILD Seite 9 (47)]
+        [BILD Seite 9 (47) (FIG 6)]
+
+### C. Correlation with information from external management systems
+
+* Externe Quellen sind ebenso möglich in Drools-Regeln einzupflegen
+** erhöht die Rechen- und Speicherlast
+
+**Beispiele**
+
+* Events von einem Monitoringsystem (Icinga, OpenNMS)
+* Daten von aktiven Netzwerkkomponenten (Router, Switche, Firewalls) über z.B.: *SNMP*
+* Umweltdaten: Temp, Humidity, CO, CO2 Konzentration
+
+
+## VII Performance Evaluation
+
+### A. Test-bed setup
+**Testumgebung**
+
+Rackspace-VM (rsyslog + liblognorm):
+* 4 i7 mit 2.8 GHz
+* 8 GiB SPeicher
+* SSD oder SATA
+
+Mittels *loggen [43]* werden Nachrichten auf einem entfernten Host mit einer
+1GBit/s Anbindung generiert und an obiges System weitergeleitet. Es wurde mit
+verschiednen Storage-backends experimentiert:
+
+        [TABELLE SEITE 11 (49)]
+
+### A. Evaluation of the test-bed peak performance
+
+* *Gerhards [44]*: rsyslog kann bis zu 250K Nachrichten pro Sekunde verarbeiten
+
+**Ergebnis Storage-Backend Benchmark PEAK (ohne log-Normalisierung)**
+
+* Ergebnisse direkt nach */dev/null*
+
+        [FIG. 7]
+
+### B. Evaluation of the correlation prototype performance
+
+*loggen* -> rsyslog(+liblognorm) -> Storage-Backend
+
+        [FIG. 7]
+
+* Das Schreiben in eine Datei ist am schnellsten (kein Overhead)
+
+* MySQL: TCP-Overhead
+
+* Elasticsearch: REST-Interface hat HTTP-Overhead (daher noch langsamer als MySQL)
+
+
+**jCorrelat(1)**
+
+Durchsatz ohne Korrelierung von Events -> JCorrelat speichert Daten (nach normalisierung)
+auch in Elasticsearch ab, allerdings direkt via Java-API, nicht über REST-Interface.
+
+
+**jCorrelat(2)**
+
+Durchsatz **mit** Korrelierung von Events. Genauso schnell wie das direkte Schreiben
+nach Elasticsearch, aber mit Korrelation.
+
+Weiter mögliche Geschwindigkeitssteigerung ist mittels rsyslog-Regeln möcglich:
+
+So könnte zum Beispiel eine rsyslog-Regel erstellt werden, die lediglich aus speziellen
+*facilities* die Logdaten zur Normalisierung an *liblognorm* weiterleitet. In diesem 
+Beispiel aus der *facility* * auth*.
+
+## VIII. Conclusion and future work
+
+### Conclusion
+
+* Prototyp für **automatische** Korreltation und Konsolidierung aus vercshiedenen Quellen
+* Prototyp ist gut skalierbar (naiv und über *distributed memory*)
+* Effiziente Verdichtung durch gruppierung
+* Starke Steigerung der Auswertegeschwindigkeit von Logdaten
+** Insbesondere wenn mehrere Systeme gleiche Logmeldung schicken
+* Existierende Monitoringsysteme können mittels Plugins erweitert werden
+** Senden von *traps*, Benachrichtigungen, Visualisierungen
+
+* Speicher ist der limitierende Faktor
+** Je mehr Speicher zur Verfügung und damit Vergrößerung der Drools-in-mem-pipeline
+*** genauere Ergebnisse
+ 
+
+
+### Future
+
+* Korrelatione mit weiteren Daten
+** detaillierter: exakte Interfaces, DPI
+** Geo-Daten
+
+* Korrelation mittels Prototyp kann uach auf anderer Datenbasis erfolgen (z.B. Elastic)
+** historische Daten
+
+* Vorgestellte Regeln können generalisiert werden um andere Verwendungszwecke abzudecken
+
+* OpenStack Integration
+
+* Integration in *ELK*-Stack
+
+
+
+
+
+
+
+
+
+
 
 
 
