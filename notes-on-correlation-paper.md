@@ -49,7 +49,7 @@ Zusätzlich ist kann eine strukturierte Speichjerung in NoSQL Datenbanken erfolg
 
 * de-facto standart
 * keine Standardisierung des Protokolls
-* [RFC 3164] BSD-Syslog Protokoll: Standardiesierung des Log-Formats
+* [RFC 3164] BSD-Syslog Protokoll: Standardisierung des Log-Formats
 * verteilte Struktur
 * Trennung von Anwendungen, System und Netzwerkinfrastruktur möglich
 
@@ -57,7 +57,7 @@ Zusätzlich ist kann eine strukturierte Speichjerung in NoSQL Datenbanken erfolg
 
 Jedes Paket startet mit **PRI** (Priority): Gewichtung und Facility gehen daraus hervor
 (als eine Dezimalnummer zusammen kodiert)
-<DD>
+        <DD>
 Es werden 8 Gewichtungen spezifiziert: 
 24 facility-Werte werden sppezifiziert: Diese werden den Daemons des Systems vorgenommen.
 

@@ -107,6 +107,18 @@ Visualisierung komplexer Daten}
 \end{frame}
 
 \begin{frame}
+\frametitle{Warum Überwachung?}
+\framesubtitle{Schaden identifizieren und vermeiden}
+
+    \begin{itemize}
+        \item 90\% aller Firmen: Opfer von Cyberattacken
+        \item 80\% derer mit finanziellen Einbußen
+        \item Diebstahl geistigen Eigentums (zwischen 2011 und 2015 Verdopplung) 
+    \end{itemize}
+
+\end{frame}
+
+\begin{frame}
     \frametitle{Warum Überwachung?}
         \framesubtitle{Servicemonitoring = Securitymonitoring?}
         
@@ -183,6 +195,7 @@ Visualisierung komplexer Daten}
                             \item   Auslastung
                             \item   Speicher
                             \item   Prozesse
+                            \item   Datendurchsatz
                         \end{itemize}
                         \item Updates
                         \item Sicherheitsauditierung
@@ -210,40 +223,241 @@ Visualisierung komplexer Daten}
 
 \end{frame}
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsection{Fallbeispiel: DDoS}
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{frame}
-\frametitle{There Is No Largest Prime Number}
+\frametitle{Visualisierungen}
+\framesubtitle{Statusverlauf}
+
+    \includegraphics[scale=0.45]{img/nag_trend.png}
+    \vspace{0.5cm}
+    
+    \footnoterule
+    \footnotesize{
+        Quelle:          selbst erstellt\\
+        Erstellt mit:    NagVis}
 
 \end{frame}
+\begin{frame}
+\frametitle{Visualisierungen}
+\framesubtitle{packets/time}
 
+\includegraphics[scale=0.4]{img/status_rrd_graph_img.png}
+\vspace{0.5cm}
+
+\footnoterule
+\footnotesize{
+   Quelle:          https://redmine.pfsense.org/issues/1354\\
+   Erstellt mit:    https://oss.oetiker.ch/rrdtool/}
+
+
+\end{frame}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Passives Monitoring}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\frame{\tableofcontents[currentsection]}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Netzwerkanalyse}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}
+\frametitle{Probing}
+\framesubtitle{Korrelierung von Netzwerkscans}
+
+\begin{alertblock}{\textit{scanning detection systems}}
+    \begin{itemize}
+        \item Trafficanalyse zu ungenau
+        \item Erstellung eines \textit{fingerprints} kaum möglich
+        \end{itemize}
+\end{alertblock}
+
+\begin{exampleblock}{\textit{Verkehrskorrelation durch statistische Verfahren}}
+    \begin{itemize}
+         \item Scans werden zeitlich korreliert
+         \item Scan-Traffic zuordnung zu Scan-Technik
+    \end{itemize}
+\end{exampleblock}
+
+\end{frame}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Logkorrelation in Cloud-Umgebungen}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{frame}
-\frametitle{There Is No Largest Prime Number}
+\frametitle{Cloud}
+\framesubtitle{Anforderungen an eine Logkorrelation}
+
+    \begin{block}{cloud}
+        \begin{itemize}
+            \item Stark steigende Systemanzahl (10K+)
+            \item In wenigen Sekunden: virtuelles RZ
+            \item Dynamisch wachsendes/sinkendes Logaufkommen
+            \item Dynamische Kosten
+            \item Proprietäre, inkompatible Monitoringsysteme
+            \footnote{IETF-draft: \textit{Syslog Extension for Cloud Using Syslog 
+            Structured Data}}
+        \end{itemize}
+    \end{block}
+    \pause
+    \begin{block}{Anforderungen Logkorrelation}
+        \begin{itemize}
+            \item Manuell undurchführbar
+            \item Skalierbar (n+1)
+            \item Automatisch durchführbar
+            \item Minimierung des Speicheraufwandes
+        \end{itemize}
+    \end{block}
 
 \end{frame}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+\begin{frame}
+\frametitle{Prototyp JCorrelat}
+\framesubtitle{Schema}
+
+
+ \includegraphics[scale=0.25]{img/schema_correlat-00.png}
+\vspace{0.5cm}
+
+\footnoterule
+\footnotesize{
+    Quelle:
+    D.Frisch ,C. Pape, S. Reissmann, and S. Rieger “Correlation and
+    Consolidation of Distributed Logging Data in Enterprise Clouds” In International
+    Journal on Advances in Internet Technology, vol 7 , 2013, pp. 39–51.}
+
+\end{frame}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}
+\frametitle{Prototyp JCorrelat}
+\framesubtitle{Schema}
+
+
+\includegraphics[scale=0.25]{img/schema_correlat-00.png}
+\vspace{0.5cm}
+
+\footnoterule
+\footnotesize{
+    Quelle:
+    D.Frisch ,C. Pape, S. Reissmann, and S. Rieger “Correlation and
+    Consolidation of Distributed Logging Data in Enterprise Clouds” In International
+    Journal on Advances in Internet Technology, vol 7 , 2013, pp. 39–51.}
+
+\end{frame}
+
+\begin{frame}
+\frametitle{Syslog}
+\framesubtitle{Aufbau RFC 3164}
+\includegraphics[scale=0.25]{img/schema-correlat-01.png}
+\end{frame}
+
+
+\begin{frame}[fragile]
+\frametitle{Syslog}
+\framesubtitle{Aufbau RFC 3164}
+
+\begin{center}
+\begin{tabular}{|l|c|c|}
+  
+    \hline 
+    \zfA \textbf{Feld}&  \textbf{Inhalt}&
+    \textbf{Beispiel}\\ 
+    \hline
+    \hline
+    \zfB\multicolumn{3}{|l|}{PRI}\\
+    \hline 
+    \zfC facility & $int \in {0..23}$  & <\textbf{3}4> \\ 
+    \hline 
+    \zfC severity & $ int \in {0..7}$  &<3\textbf{4}>\\ 
+    \hline
+    \zfB \multicolumn{3}{|l|}{HEADER}\\
+    \hline
+    \zfC timestamp &mm dd hh:mm:ss  &\verb|Oct 11 22:14:15|\\ 
+    \hline 
+    \zfC hostname & string  &\verb|mymachine|\\ 
+    \hline 
+    \zfB \multicolumn{3}{|l|}{MSG}\\     
+    \hline
+    \zfC tag &string  &\verb|su:|\\
+    \hline
+    \zfC content &string&\verb|'su root' failed ...| \\
+    \hline
+\end{tabular} 
+\end{center}
+
+\vspace{0.5cm}
+\small{
+\begin{verbatim}
+<34>Oct 11 22:14:15 mymachine su: 'su root' failed for lonvick
+on /dev/pts/8
+\end{verbatim}}
+
+\end{frame}
+\begin{frame}[fragile]
+\frametitle{Syslog + strukturierte Daten}
+\framesubtitle{Aufbau RFC 5425}
+
+\centering{ \texttt{RFC5425} Implementiert durch \texttt{syslog-ng} und \texttt{rsyslog}}
+
+\begin{center}
+    \begin{tabular}{|l|c|c|}
+        
+        \hline 
+        \zfA \textbf{Feld}&  \textbf{Inhalt}& \textbf{Beispiel}\\ 
+        \hline
+        \hline
+        \zfB \multicolumn{3}{|l|}{HEADER}\\
+        \zfC facility & $int \in {0..23}$  & <\textbf{16}5> \\ 
+        \hline 
+        \zfC severity & $ int \in {0..7}$  &<16\textbf{5}>\\ 
+        \hline
+        \zfD timestamp & \texttt{RFC3339}  &\verb|2003-10-11T22:14:15.003Z|\\ 
+        \hline 
+        \zfC hostname & string  &\verb|mymachine.example.com|\\ 
+        \hline 
+        \zfB \multicolumn{3}{|l|}{MSG}\\     
+        \hline
+        \zfC tag &string  &\verb|su:|\\
+        \hline
+        \zfC content &string&\verb|'su root' failed ...| \\
+        \hline
+    \end{tabular} 
+\end{center}
+
+\small{
+\begin{verbatim}
+<165> 2003-10-11T22:14:15.003Z mymachine.example.com
+evntslog - ID47 [exampleSDID@32473 iut="3" eventSource=
+"Application" eventID="1011"] BOMAn application
+event log entry...
+\end{verbatim}}
+
+\end{frame}
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{DEMO}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\frame{\tableofcontents[currentsection]}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{(Icinga2: aktives Monitoring)}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}
+\frametitle{There Is No Largest Prime Number}
+
+\end{frame}
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{ELK-Stack: passives Monitoring}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}
+\frametitle{There Is No Largest Prime Number}
+
+\end{frame}
 
 \end{document}
 
