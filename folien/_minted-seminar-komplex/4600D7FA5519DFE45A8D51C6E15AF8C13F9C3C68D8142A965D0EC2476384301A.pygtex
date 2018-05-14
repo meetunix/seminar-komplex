@@ -1,0 +1,16 @@
+\begin{Verbatim}[commandchars=\\\{\},codes={\catcode`\$=3\catcode`\^=7\catcode`\_=8}]
+\PYG{p}{\PYGZob{}}   \PYG{n+nt}{\PYGZdq{}data\PYGZdq{}}\PYG{p}{:} \PYG{p}{\PYGZob{}}
+        \PYG{n+nt}{\PYGZdq{}protocol\PYGZdq{}}\PYG{p}{:}\PYG{l+s+s2}{\PYGZdq{}ssh2\PYGZdq{}}\PYG{p}{,}
+        \PYG{n+nt}{\PYGZdq{}port\PYGZdq{}} \PYG{p}{:} \PYG{l+s+s2}{\PYGZdq{}54548\PYGZdq{}}\PYG{p}{,}
+        \PYG{n+nt}{\PYGZdq{}ip\PYGZdq{}}\PYG{p}{:} \PYG{l+s+s2}{\PYGZdq{}10.0.23.4\PYGZdq{}}\PYG{p}{,}
+        \PYG{n+nt}{\PYGZdq{}user\PYGZdq{}}\PYG{p}{:} \PYG{l+s+s2}{\PYGZdq{}root\PYGZdq{}}
+    \PYG{p}{\PYGZcb{},}
+    \PYG{n+nt}{\PYGZdq{}time\PYGZdq{}}\PYG{p}{:}\PYG{l+s+s2}{\PYGZdq{}2014\PYGZhy{}01\PYGZhy{}29T16:06:00.000\PYGZdq{}}\PYG{p}{,}
+    \PYG{n+nt}{\PYGZdq{}host\PYGZdq{}}\PYG{p}{:}\PYG{l+s+s2}{\PYGZdq{}test.example.com\PYGZdq{}}\PYG{p}{,}
+    \PYG{n+nt}{\PYGZdq{}facility\PYGZdq{}}\PYG{p}{:}\PYG{l+s+s2}{\PYGZdq{}auth\PYGZdq{}}\PYG{p}{,}
+    \PYG{n+nt}{\PYGZdq{}severity\PYGZdq{}}\PYG{p}{:}\PYG{l+s+s2}{\PYGZdq{}info\PYGZdq{}}\PYG{p}{,}
+    \PYG{n+nt}{\PYGZdq{}program\PYGZdq{}} \PYG{p}{:}\PYG{l+s+s2}{\PYGZdq{}sshd\PYGZdq{}}\PYG{p}{,}
+    \PYG{n+nt}{\PYGZdq{}message\PYGZdq{}}\PYG{p}{:}\PYG{l+s+s2}{\PYGZdq{} Failed password for root from}
+\PYG{l+s+s2}{                10.0.23.4 port 54548 ssh2\PYGZdq{}}\PYG{p}{,}
+    \PYG{n+nt}{\PYGZdq{}tags\PYGZdq{}} \PYG{p}{:} \PYG{p}{[}\PYG{l+s+s2}{\PYGZdq{}SSHFAILURE\PYGZdq{}}\PYG{p}{]} \PYG{p}{\PYGZcb{}}
+\end{Verbatim}

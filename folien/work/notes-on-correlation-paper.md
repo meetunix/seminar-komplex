@@ -106,7 +106,7 @@ Das einzige System was diesen Anforderungen gerecht wird: NoSQL
 
 **NoSQL:**
 Im Gegensatz zu SQL Datenbanken, wird bei NoSQL-Datenbanken kein Schema oder ein
-minimales Schema angelegt, das erlaubt die Änderunge der Structur zu jeder Zeit.
+minimales Schema angelegt, das erlaubt die Änderunge der Struktur zu jeder Zeit.
 Ergo, perfekt um Log-Daten für eine gewisse Zeit zu speichern.
 Die Daten sind wohlformatiert abgelegt und die KEY->VAL Paare unterscheiden
 sich lediglich nach LOG-Quelle.
@@ -229,20 +229,20 @@ A. Normalisierung: die tags: SSHFAILURE, SSHFAILURE werden speziellen Events zug
 B. Serialisierung mithilfe von JSON (JavaScript Object Notation) und Weiterleitung zum rsyslog output-Modul und dort zur Korrelations-Software.
 
         {
-            ”data”: {
-                ”protocol”:”ssh2”,
-                ”port” : ”54548”,
-                ”ip”: ”10.0.23.4”,
-                ”user”: ”root”
+            "data": {
+                "protocol":"ssh2",
+                "port" : "54548",
+                "ip": "10.0.23.4",
+                "user": "root"
             } ,
-            ”time”:”2014−01−29T16:06:00.000”,
-            ”host”:”test.example.com”,
-            ”facility”:”auth”,
-            ”severity”:”info”,
-            ”program” :”sshd ”,
-            ”message”:”Failed password for root from
-            10.0.23.4 port 54548 ssh2”,
-            ”tags” : [”SSHFAILURE”]
+            "time":"2014-01-29T16:06:00.000",
+            "host":"test.example.com",
+            "facility":"auth",
+            "severity":"info",
+            "program" :"sshd",
+            "message":"Failed password for root from
+            10.0.23.4 port 54548 ssh2",
+            "tags" : ["SSHFAILURE"]
         }
 
 Mithilfe dieser Daten kann die Korrelations-Software [1] die Meldungen analysieren und an
@@ -277,19 +277,19 @@ A. Entdeckung einer Brute-Force-Attacke
     * facility=*security* und severity=*warning*, Message=*SSH brute-force attack*
     * neues Syslog-tag=**BRUTEFORCE**
 
-        rule ”SSH brute−force attempt”
-        no−loop
+        rule "SSH brute-force attempt"
+        no-loop
         when
             Message (   $host:host,
-                        $user:data[”user”])
+                        $user:data["user"])
             $atts: CopyOnWriteArrayList(size >= 10)
                 from collect(
-                    Message(    tags contains”SSHFAILURE”,
+                    Message(    tags contains"SSHFAILURE",
                                 host == $host,
-                                data[”user” ] == $user)
+                                data["user" ] == $user)
                     over window : time (1m))
         then
-            Message last = (Message) $atts.get($atts.size( )−1) ;
+            Message last = (Message) $atts.get($atts.size( )-1) ;
 
             for (Object f: $atts) {
                 retract ( f ) ;
@@ -299,9 +299,9 @@ A. Entdeckung einer Brute-Force-Attacke
                 . setTime(last.getTime( ))
                 . setSeverity(Message.Severity.WARNING)
                 . setFacility(Message.Facility.SECURITY)
-                . setMessage(”SHH brute−force attack” +
-                    ”for @{data.user} from @{data.ip}”)
-                . addTag (”BRUTEFORCE”)
+                . setMessage("SHH brute-force attack" +
+                    "for @{data.user} from @{data.ip}")
+                . addTag ("BRUTEFORCE")
                 . message( )) ;
         end
 
@@ -310,21 +310,21 @@ A. Entdeckung einer Brute-Force-Attacke
 ** bezieht sich auf Syslog-tag *SSHSUCCESS* innerhalb von 10s nach den tags: *SSHFAILURE* und *BRUTEFORCE* + selber *username*.
 *** severity=*emergency* und tSyslog-tag: *INCIDENT*
 
-        rule ”Successful SSH brute−force attack”
-        no−loop
+        rule "Successful SSH brute-force attack"
+        no-loop
         when
-            $ att: Message ( tags contains ”SSHFAILURE” ,
-                                tags contains ”BRUTEFORCE”,
+            $ att: Message ( tags contains "SSHFAILURE" ,
+                                tags contains "BRUTEFORCE",
                                 $host: host ,
-                                $user: data [”user”])
+                                $user: data ["user"])
             $ suc: Message ( host == $host,
-                                data [”user” ] == $user,
-                                tags contains ”SSHSUCCESS” ,
+                                data ["user" ] == $user,
+                                tags contains "SSHSUCCESS" ,
                                 this finishes[10 s] $att)
         then
-            $att.addTag(”INCIDENT”);
+            $att.addTag("INCIDENT");
             $att.setSeverity(Severity.EMERGENCY);
-            $att.setMessage($att.getMessage( ) + ”[bruteforce]”) ;
+            $att.setMessage($att.getMessage( ) + "[bruteforce]") ;
         update ($att) ;
         end
 
@@ -343,7 +343,7 @@ an **Icinga/Nagios** gesendet werden.
 * limitierender Faktor ist Drools in-memory-engine
 
 **mögliche Lösungen:**
-* mehrere Drools-Instanzen die mittels *ditributed memory* gelinked sind
+* mehrere Drools-Instanzen die mittels *distributed memory* gelinked sind
 ** Keine OpenSource-Lösung verfügbar
 ** für große Enterprise-Clouds empfehlenswert
 
@@ -448,7 +448,7 @@ Beispiel aus der *facility* * auth*.
 ** detaillierter: exakte Interfaces, DPI
 ** Geo-Daten
 
-* Korrelation mittels Prototyp kann uach auf anderer Datenbasis erfolgen (z.B. Elastic)
+* Korrelation mittels Prototyp kann auch auf anderer Datenbasis erfolgen (z.B. Elastic)
 ** historische Daten
 
 * Vorgestellte Regeln können generalisiert werden um andere Verwendungszwecke abzudecken

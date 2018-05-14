@@ -1,0 +1,19 @@
+\begin{Verbatim}[commandchars=\\\{\},codes={\catcode`\$=3\catcode`\^=7\catcode`\_=8}]
+       \PYG{n}{rule} \PYG{l+s}{\PYGZdq{}Successful SSH brute\PYGZhy{}force attack\PYGZdq{}}
+       \PYG{n}{no}\PYG{o}{\PYGZhy{}}\PYG{n}{loop}
+       \PYG{n}{when}
+            \PYG{n}{\PYGZdl{}} \PYG{n}{att}\PYG{o}{:} \PYG{n}{Message} \PYG{o}{(}    \PYG{n}{tags} \PYG{n}{contains} \PYG{l+s}{\PYGZdq{}SSHFAILURE\PYGZdq{}}\PYG{o}{,}
+                                \PYG{n}{tags} \PYG{n}{contains} \PYG{l+s}{\PYGZdq{}BRUTEFORCE\PYGZdq{}}\PYG{o}{,}
+                                \PYG{n}{\PYGZdl{}host}\PYG{o}{:} \PYG{n}{host} \PYG{o}{,}
+                                \PYG{n}{\PYGZdl{}user}\PYG{o}{:} \PYG{n}{data} \PYG{o}{[}\PYG{l+s}{\PYGZdq{}user\PYGZdq{}}\PYG{o}{])}
+            \PYG{n}{\PYGZdl{}} \PYG{n}{suc}\PYG{o}{:} \PYG{n}{Message} \PYG{o}{(}    \PYG{n}{host} \PYG{o}{==} \PYG{n}{\PYGZdl{}host}\PYG{o}{,}
+                                \PYG{n}{data} \PYG{o}{[}\PYG{l+s}{\PYGZdq{}user\PYGZdq{}} \PYG{o}{]} \PYG{o}{==} \PYG{n}{\PYGZdl{}user}\PYG{o}{,}
+                                \PYG{n}{tags} \PYG{n}{contains} \PYG{l+s}{\PYGZdq{}SSHSUCCESS\PYGZdq{}}\PYG{o}{,}
+                                \PYG{k}{this} \PYG{n}{finishes}\PYG{o}{[}\PYG{l+m+mi}{10} \PYG{n}{s}\PYG{o}{]} \PYG{n}{\PYGZdl{}att}\PYG{o}{)}
+       \PYG{n}{then}
+            \PYG{n}{\PYGZdl{}att}\PYG{o}{.}\PYG{n+na}{addTag}\PYG{o}{(}\PYG{l+s}{\PYGZdq{}INCIDENT\PYGZdq{}}\PYG{o}{);}
+            \PYG{n}{\PYGZdl{}att}\PYG{o}{.}\PYG{n+na}{setSeverity}\PYG{o}{(}\PYG{n}{Severity}\PYG{o}{.}\PYG{n+na}{EMERGENCY}\PYG{o}{);}
+            \PYG{n}{\PYGZdl{}att}\PYG{o}{.}\PYG{n+na}{setMessage}\PYG{o}{(}\PYG{n}{\PYGZdl{}att}\PYG{o}{.}\PYG{n+na}{getMessage}\PYG{o}{(} \PYG{o}{)} \PYG{o}{+} \PYG{l+s}{\PYGZdq{}[bruteforce]\PYGZdq{}}\PYG{o}{);}
+       \PYG{n}{update} \PYG{o}{(}\PYG{n}{\PYGZdl{}att}\PYG{o}{);}
+       \PYG{n}{end}
+\end{Verbatim}
