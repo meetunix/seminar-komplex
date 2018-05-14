@@ -23,6 +23,7 @@
 *.out
 *.vrb
 *.pygtex
+_minted*
 
 
 
