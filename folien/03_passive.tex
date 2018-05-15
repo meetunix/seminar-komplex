@@ -70,9 +70,9 @@
     \hline
     \zfB\multicolumn{3}{|l|}{PRI}\\
     \hline 
-    \zfC facility & $int \in {0..23}$  & <\textbf{3}4> \\ 
+    \zfC facility & $int \in \{0..23\}$  & <\textbf{3}4> (\texttt{sys. daemons}) \\ 
     \hline 
-    \zfC severity & $ int \in {0..7}$  &<3\textbf{4}>\\ 
+    \zfC severity & $ int \in \{0..7\}$  &<3\textbf{4}> (\texttt{Warning})\\ 
     \hline
     \zfB \multicolumn{3}{|l|}{HEADER}\\
     \hline
@@ -99,9 +99,10 @@ on /dev/pts/8
 \end{frame}
 \begin{frame}[fragile]
 \frametitle{Syslog + strukturierte Daten}
-\framesubtitle{Aufbau RFC 5425}
+\framesubtitle{Aufbau RFC 5424}
 
-\centering{ \texttt{RFC5425} Implementiert durch \texttt{syslog-ng} und \texttt{rsyslog}}
+\centering{ \texttt{RFC5424} Implementiert durch \texttt{syslog-ng} und
+    {\color{red}\texttt{rsyslog}}}
 
 \begin{center}
     \begin{tabular}{|l|c|c|}
@@ -111,17 +112,17 @@ on /dev/pts/8
         \hline
         \hline
         \zfB \multicolumn{3}{|l|}{HEADER}\\
-        \zfC facility & $int \in {0..23}$  & <\textbf{16}5> \\ 
+        \zfC facility & $int \in \{0..23\}$  & <\textbf{16}5> (\texttt{local0}) \\ 
         \hline 
-        \zfC severity & $ int \in {0..7}$  &<16\textbf{5}>\\ 
+        \zfC severity & $ int \in \{0..7\}$  &<16\textbf{5}> (\texttt{Notice})\\ 
         \hline
         \rowcolor{green} timestamp & \texttt{RFC3339}  &\verb|2003-10-11T22:14:15.003Z|\\ 
         \hline 
         \zfC hostname & string  &\verb|mymachine.example.com|\\ 
         \hline 
-        \zfB \multicolumn{3}{|l|}{MSG}\\     
+        \zfC tag &string  &\verb|evntslog|\\
         \hline
-        \zfC tag &string  &\verb|su:|\\
+        \zfB \multicolumn{3}{|l|}{MSG}\\     
         \hline
         \rowcolor{green} structured data& key=value &\verb|eventID="1011"| \\
         \hline
@@ -152,6 +153,7 @@ event log entry...
 \begin{frame}
 \frametitle{Persistente Speicherung}
 
+\pause
 
 \begin{alertblock}{Probleme}
     \begin{itemize}
@@ -174,7 +176,7 @@ event log entry...
 \begin{exampleblock}{NoSQL (Not only SQL)}
     \begin{itemize}
         \item Kein festes Schema
-        \item Wohlformatierte strukturierte Daten (key=val)
+        \item Wohlformatierte strukturierte Daten (key $\Rightarrow$ val)
         \item Sehr gut skalierbar
     \end{itemize}
 \end{exampleblock}
@@ -183,10 +185,10 @@ event log entry...
 \begin{frame}
 \frametitle{Persistente Speicherung}
 \framesubtitle{Überblick über 3 NoSQL-Strategien}
-
-\begin{block}{\texttt{key-value datastores}}
+\pause
+\begin{block}{\texttt{key $\Rightarrow$ value datastores}}
     \begin{itemize}
-        \item Hochperformant (key $\rightarrow$ BLOB)
+        \item Hochperformant (key $\Rightarrow$ BLOB)
         \item Einfache API (\texttt{insert, delete, lookup})
         \item \color{red} Keine Suche in BLOBs
     \end{itemize}
@@ -213,14 +215,18 @@ event log entry...
 \framesubtitle{}
 
 \begin{enumerate}
+    \pause
+    \item \textbf{Reduktion des Datenaufkommens}
+    \begin{itemize}
+       \item Konsolidierung
+    \end{itemize}
+    \pause
     \item \textbf{Identifizierung wesentlicher Informationen}
     \begin{itemize}
         \item Korrelation
+
     \end{itemize}
-    \item \textbf{Reduktion des Datenaufkommens}
-        \begin{itemize}
-        \item Konsolidierung
-        \end{itemize}
+
 \end{enumerate}
 \pause
 \vspace{0.7cm}
@@ -228,7 +234,7 @@ event log entry...
 \vspace{0.5cm}
 Beispielhafte Korrelation anhand einer SSH Brute-Force-Attacke.\\
 \vspace{0.5cm}
-\textbf{Ziel:} Den {\color{red}einen} erfolgreichen Versuch dieser Attacke zu 
+\textbf{Ziel:} Den {\color{red}\underline{einen}} erfolgreichen Versuch dieser Attacke zu 
 identifizieren.
 \end{frame}
 
@@ -351,7 +357,7 @@ word% from %ip:ipv4% port %port : number% %protocol:word%
                 . setTime(last.getTime( ))
                 . setSeverity(Message.Severity.WARNING)
                 . setFacility(Message.Facility.SECURITY)
-                . setMessage("SHH brute-force attack" +
+                . setMessage("SSH brute-force attack" +
                     "for @{data.user} from @{data.ip}")
                 . addTag ("BRUTEFORCE")
                 . message( )) ;
