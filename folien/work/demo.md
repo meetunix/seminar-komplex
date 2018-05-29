@@ -22,3 +22,7 @@ vgabn.dyndns.dk (Rostock-Telekom):
 Aus China + Login Erfolgreich:
 
 system.auth.ssh.geoip.country_code3:CN OR system.auth.ssh.event:Accepted
+
+China + Failed + root
+
+system.auth.ssh.geoip.country_code3:CN AND system.auth.ssh.event:Failed AND system.auth.user: root

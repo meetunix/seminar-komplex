@@ -51,52 +51,52 @@
 
 \begin{frame}
 \frametitle{Syslog}
-\framesubtitle{Aufbau RFC 3164}
+\framesubtitle{Aufbau RFC 5424}
 \includegraphics[scale=0.25]{img/schema-correlat-01.png}
 \end{frame}
 
 
-\begin{frame}[fragile]
-\frametitle{Syslog}
-\framesubtitle{Aufbau RFC 3164}
-
-\begin{center}
-\begin{tabular}{|l|c|c|}
-  
-    \hline 
-    \zfA \textbf{Feld}&  \textbf{Inhalt}&
-    \textbf{Beispiel}\\ 
-    \hline
-    \hline
-    \zfB\multicolumn{3}{|l|}{PRI}\\
-    \hline 
-    \zfC facility & $int \in \{0..23\}$  & <\textbf{3}4> (\texttt{sys. daemons}) \\ 
-    \hline 
-    \zfC severity & $ int \in \{0..7\}$  &<3\textbf{4}> (\texttt{Warning})\\ 
-    \hline
-    \zfB \multicolumn{3}{|l|}{HEADER}\\
-    \hline
-    \zfC timestamp &mm dd hh:mm:ss  &\verb|Oct 11 22:14:15|\\ 
-    \hline 
-    \zfC hostname & string  &\verb|mymachine|\\ 
-    \hline 
-    \zfB \multicolumn{3}{|l|}{MSG}\\     
-    \hline
-    \zfC tag &string  &\verb|su:|\\
-    \hline
-    \zfC content &string&\verb|'su root' failed ...| \\
-    \hline
-\end{tabular} 
-\end{center}
-
-\vspace{0.5cm}
-\small{
-\begin{verbatim}
-<34>Oct 11 22:14:15 mymachine su: 'su root' failed for lonvick
-on /dev/pts/8
-\end{verbatim}}
-
-\end{frame}
+%\begin{frame}[fragile]
+%\frametitle{Syslog}
+%\framesubtitle{Aufbau RFC 3164}
+%
+%\begin{center}
+%\begin{tabular}{|l|c|c|}
+%  
+%    \hline 
+%    \zfA \textbf{Feld}&  \textbf{Inhalt}&
+%    \textbf{Beispiel}\\ 
+%    \hline
+%    \hline
+%    \zfB\multicolumn{3}{|l|}{PRI}\\
+%    \hline 
+%    \zfC facility & $int \in \{0..23\}$  & <\textbf{3}4> (\texttt{sys. daemons}) \\ 
+%    \hline 
+%    \zfC severity & $ int \in \{0..7\}$  &<3\textbf{4}> (\texttt{Warning})\\ 
+%    \hline
+%    \zfB \multicolumn{3}{|l|}{HEADER}\\
+%    \hline
+%    \zfC timestamp &mm dd hh:mm:ss  &\verb|Oct 11 22:14:15|\\ 
+%    \hline 
+%    \zfC hostname & string  &\verb|mymachine|\\ 
+%    \hline 
+%    \zfB \multicolumn{3}{|l|}{MSG}\\     
+%    \hline
+%    \zfC tag &string  &\verb|su:|\\
+%    \hline
+%    \zfC content &string&\verb|'su root' failed ...| \\
+%    \hline
+%\end{tabular} 
+%\end{center}
+%
+%\vspace{0.5cm}
+%\small{
+%\begin{verbatim}
+%<34>Oct 11 22:14:15 mymachine su: 'su root' failed for lonvick
+%on /dev/pts/8
+%\end{verbatim}}
+%
+%\end{frame}
 \begin{frame}[fragile]
 \frametitle{Syslog + strukturierte Daten}
 \framesubtitle{Aufbau RFC 5424}
@@ -114,17 +114,18 @@ on /dev/pts/8
         \zfB \multicolumn{3}{|l|}{HEADER}\\
         \zfC facility & $int \in \{0..23\}$  & <\textbf{16}5> (\texttt{local0}) \\ 
         \hline 
-        \zfC severity & $ int \in \{0..7\}$  &<16\textbf{5}> (\texttt{Notice})\\ 
+        \rowcolor{green} severity & $ int \in \{0..7\}$  &<16\textbf{5}>  
+        (\texttt{Notice})\\ 
         \hline
-        \rowcolor{green} timestamp & \texttt{RFC3339}  &\verb|2003-10-11T22:14:15.003Z|\\ 
+        \zfC timestamp & \texttt{RFC3339}  &\verb|2003-10-11T22:14:15.003Z|\\ 
         \hline 
         \zfC hostname & string  &\verb|mymachine.example.com|\\ 
         \hline 
-        \zfC tag &string  &\verb|evntslog|\\
+        \rowcolor{green} tag &string  &\verb|evntslog|\\
         \hline
         \zfB \multicolumn{3}{|l|}{MSG}\\     
         \hline
-        \rowcolor{green} MSGID& key=value &\verb|ID47| \\
+        \zfC MSGID& string &\verb|ID47| \\
         \hline
         \rowcolor{green} structured data& key=value &\verb|eventID="1011"| \\
         \hline
