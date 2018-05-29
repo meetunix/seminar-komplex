@@ -6,13 +6,13 @@
 \frametitle{Cloud}
 \framesubtitle{Anforderungen an eine Logkorrelation}
 
-    \begin{block}{cloud}
+    \begin{block}{cloud - IaaS}
         \begin{itemize}
             \item Stark steigende Systemanzahl (10K+)
             \item In wenigen Sekunden: virtuelles RZ
             \item Dynamisch wachsendes/sinkendes Logaufkommen
             \item Dynamische Kosten
-            \item Proprietäre, inkompatible Monitoringsysteme
+            \item \color{red}{Proprietäre, inkompatible Monitoringsysteme}
             \footnote{IETF-draft: \textit{Syslog Extension for Cloud Using Syslog 
             Structured Data}}
         \end{itemize}
@@ -124,19 +124,20 @@ on /dev/pts/8
         \hline
         \zfB \multicolumn{3}{|l|}{MSG}\\     
         \hline
+        \rowcolor{green} MSGID& key=value &\verb|ID47| \\
+        \hline
         \rowcolor{green} structured data& key=value &\verb|eventID="1011"| \\
         \hline
-        \zfC content &string&\verb|'su root' failed ...| \\
+        \zfC content &string&\verb|An application event log...| \\
         \hline
     \end{tabular} 
 \end{center}
 
 \small{
 \begin{verbatim}
-<165> 2003-10-11T22:14:15.003Z mymachine.example.com
-evntslog - ID47 [exampleSDID@32473 iut="3" eventSource=
-"Application" eventID="1011"] BOMAn application
-event log entry...
+<165> 2003-10-11T22:14:15.003Z mymachine.example.com evntslog -
+ID47 [exampleSDID@32473 iut="3" eventSource= "Application"
+eventID="1011"] BOMAn application event log entry...
 \end{verbatim}}
 
 \end{frame}
