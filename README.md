@@ -1,4 +1,4 @@
-# Seminar: Aufbereitung und Auswertng komplexer Daten
+# Seminar: Aufbereitung und Auswertung komplexer Daten
 
 ## Referat
 
