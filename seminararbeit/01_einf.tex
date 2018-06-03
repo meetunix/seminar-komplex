@@ -50,7 +50,6 @@ Die Verfügbarkeit gleicht damit auch der grundlegenden Fragestellung des
 Servicemonitorings. Ist ein gewisser Dienst erreichbar und ist dessen 
 Abarbeitungsgeschwindigkeit in einem vorgegebenem Rahmen?\\\\
 
-\newpage
 \underline{\textbf{Integrität}}\\\\
 Integrität wird erreicht, wenn eine Änderung der Daten nicht unbemerkt geschieht. Es soll 
 somit ein Indikator für die Veränderung existieren. Um dieses Ziel zu erreichen werden
@@ -60,7 +59,11 @@ Auch das Ziel der Integrität lässt sich kontrollieren, dazu finden die selben 
 Verwendung wie in der IT-Sicherheit. Es lassen sich zum Beispiel auf regelmäßiger Basis 
 Daten prüfen, von denen man vorher mit einem kryptografisch sicheren Verfahren ein Hash 
 errechnet hat. Ändert sich die Hashsumme, ohne das ein Zugriff auf die Daten genehmigt 
-wurde, ist dies ein Integritätsverlust.
+wurde, ist dies ein Integritätsverlust.\\
+
+Zusammengefasst ist Monitoring von IT-Infrastruktur immer auch gleich Securitymonitoring. 
+Mithilfe eines lückenlos ausgerollten Monitorings ist es demnach möglich zu Beweisen zu 
+welchem Zeitpunkt ein gewisser Dienst welchen Zustand hatte.
  
 \section{Motive}
 
@@ -72,14 +75,124 @@ finanzielle Einbußen erlitten. Aktuell werden innerhalb eines Jahres $86\,\%$ d
 nordamerikanischen Unternehmen Opfer von Cyberattacken und der Diebstahl des geistigen 
 Eigentums hat sich in den Jahren 2011-2015 verdoppelt.\\
 Auch der aktuelle, jährlich veröffentlichte Lagebericht zur nationalen IT-Sicherheit des
-Bundesamtes für Sicherheit in Informationstechnik (BSI) \cite[12]{bsi-lage}, berichtet  
+Bundesamtes für Sicherheit in Informationstechnik (BSI) \cite[12]{bsi-lage} berichtet  
 von einer Cyberattacke auf eine großen deutschen Industriekonzern. Etwa zwei Monate 
 konnten unbemerkt Daten aus weltweit verteilten Standorten in Richtung Südostasien 
 abfließen bevor der Vorfall detektiert wurde. Aus den Empfehlungen des BSI lässt sich 
 schließen, dass neben einer ungünstigen Netzwerksegmentierung auch mangelhaftes Monitoring
-der Grund für die späte Erkennung war. 
+der Grund für die späte Erkennung war. In diesem Zusammenhang ist auch der Angriff auf 
+den Deutschen Bundestag im Jahr 2015 erwähnenswert, da auch in diesem Fall einige Wochen 
+lang unbemerkt Daten abfließen konnten und das Ziel hoheitliches war, 
+Technologietransfer und finanzielle Absichten also eine untergeordnete Rolle gespielt 
+haben.
+\newpage
+\subsection{Behörden mit Überwachungsauftrag}
+
+Aufgrund der zuvor dargestellten Gründe, wurden in den letzten Jahren eine Reihe an neuen 
+Behörden in der Bundesrepublik Deutschland gegründet, deren Auftrag die Überwachung 
+(Monitoring) wichtiger Infrastrukturen innerhalb der Grenzen der Bundesrepublik ist. Zum 
+Einen das Nationale Cyber-Abwehrzentrum (NCAZ) \cite{ncaz} mit Sitz in Bonn. Die Aufgabe 
+des NCAZ ist 
+die Koordinierung von Abwehrmaßnahmen und Informationskonsolidierung über den Aufbau von 
+rein ziviler Infrastruktur über mehrere Behörden hinweg. Das Nationale IT-Lagezentrum 
+\cite{lagezentrum} 
+Überwacht hingegen aktiv die Regierungsnetze und erstellt monatliche Lageberichte. Auf 
+militärischer Seite übernimmt der Bundeswehr-Organisationsbereich Cyber- und 
+Informationsraum (CIR) diese Aufgabe.
+
+\section{Überwachungsformen}
+
+Es lassen sich sich zwei verschiedene Überwachungsformen identifizieren die im Folgenden 
+vorgestellt werden.
+
+\subsection{Aktive Überwachung}
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[scale=0.36]{img/sequence_uml_active_trans}
+    \caption{Sequenzdiagramm: Aktive Überwachung}
+    \label{aktiv}
+\end{figure}
+
+Obiges Sequenzdiagramm zeigt schematisch den Ablauf aktiver Überwachung. \emph{Monitor} 
+ist die zentrale Instanz auf der alle zu überwachenden Informationen gesammelt, 
+aufbereitet und ausgegeben werden. Jedoch muss der \emph{Monitor} nicht alle Information
+sammeln, es können auch hierarchisch untergeordnete \emph{Aggregatoren} existieren, 
+welche ebenfalls Informationen von verschiedenen Diensten erheben. Diese 
+\emph{Aggregatoren} können aus Leistungsgründen vor einen \emph{Monitor} geschaltet 
+werden, um die Anzahl an abzufragenden Diensten für den \emph{Monitor} zu verringern. In 
+diesem Fall bereitet bereits der \emph{Aggregator} die Daten auf und der \emph{Monitor} 
+fragt nur noch die schon konsolidierten Informationen ab. Aber auch Segmentierungen von 
+Infrastruktur können diesen Aufbau notwendig machen, wenn z.B. \emph{Monitor} 
+\emph{Dienst A} und \emph{Dienst B} nicht direkt erreichen kann oder darf. Zur 
+Klassifizierung von Ereignissen werden in Überwachungslösungen\footnote{zum Beispiel: 
+Nagios, Icinga} oft verschiedene Status verwendet, dies dient hauptsächlich zum 
+schnelleren Verständnis für die auswertende Person. Aus diesem Grund wurden in 
+Abbildung \ref{aktiv} die Bezeichnungen für der Abfragefunktionen \texttt{getState()} und 
+\texttt{reState()} gewählt. Mögliche Status für die Rückgabe sind folgende:
+
+\begin{table}[ht]
+    \centering{
+    \renewcommand{\arraystretch}{1.3}
+    \begin{tabular}{|l|l|}
+        \hline
+       \rowcolor{gray!40} \textbf{Statusbezeichnung} & \textbf{Statusbeschreibung}\\
+        \hline
+        \texttt{OK} & Dienst läuft innerhalb normaler Parameter.\\
+        \texttt{WARNING}& Die (zuvor definierte) Warnschwelle wurde überschritten.\\
+        \texttt{CRITICAL}& Die kritische Schwelle wurde überschritten oder es gab einen
+        Timeout.\\
+        \texttt{UNKNOWN}& Ein undefinierter Wert wurde an \emph{Monitor} übermittelt.\\
+        \hline
+    \end{tabular}
+    \caption{Statusübersicht}}
+    \label{t_status}
+\end{table}
+
+Mithilfe der Techniken zur aktiven Überwachung lassen sich zwei Klassen überwachbarer 
+Dienste identifizieren: Die Betriebssystemabhängigen und die Betriebssystemunabhängigen 
+Dienste.
 
 
-\subsection{Gremien}
+\begin{table}[ht]
+\centering{
+\renewcommand{\arraystretch}{1.3}
+\begin{tabular}{|l|l|}
+    \hline
+    \rowcolor{gray!40}\textbf{Dienst / Entität }& \textbf{Beispiel} \\
+    \hline
+    \multicolumn{2}{|l|}{\cellcolor{shadecolor}\textbf{Betriebssystemabhängig}}\\
+    \hline
+    Auslastung & wie viel CPU-Zeit benötigt ein bestimmter Prozess/das ganze System\\
+    Speicher & Speicherauslastung des Systems/ Belegung persistenter Speicher\\
+    Prozesse & läuft ein bestimmter Prozess/ wie viele Prozesse eines Namens laufen\\
+    Datendurchsatz & wie viele Bytes passieren ein Interface, Anzahl an
+    \emph{paket-drops},\emph{rejects}\\
+    Audit & wurden Zugriffsregeln verletzt/ welcher Nutzer hat auf Datei X zugegriffen\\
+    \hline
+    \multicolumn{2}{|l|}{\cellcolor{shadecolor}\textbf{Betriebssystemunabhängig}}\\
+    \hline
+    \texttt{ICMP} & Netzwerkschnittstelle/ System erreichbar, \emph{round trip 
+    time}\\
+    \texttt{TCP/UDP} & ist bestimmter \emph{port} erreichbar\\
+    Anwendungsprotokolle & Login möglich / Referenzdaten abrufbar / Rückgabewerte 
+    Testroutinen\\
+    \texttt{SNMP} & Abfrage beliebiger Kenngrößen\\
+    \hline
+\end{tabular}
+ \caption{Beispiele für aktive Überwachung}
+ \label{t_aktiv}}
+\end{table}
 
-\section{Formen der Überwachung}
+
+
+
+
+
+\newpage
+\subsection{Passive Überwachung}
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[scale=0.36]{img/sequence_uml_passive_trans}
+    \caption{Passive Überwachung}
+    \label{passiv}
+\end{figure}

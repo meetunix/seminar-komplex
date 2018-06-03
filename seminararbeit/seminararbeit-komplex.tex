@@ -4,6 +4,7 @@
 \usepackage{zed-csp}
 \usepackage{ngerman}
 \usepackage{color}
+\usepackage{colortbl}
 \usepackage[dvipsnames]{xcolor}
 \usepackage{fancyhdr}
 \usepackage{lastpage}
@@ -12,6 +13,8 @@
 \usepackage[pdftex]{graphicx}
 \usepackage{hyperref}
 
+\usepackage{setspace}
+\onehalfspacing      
 
 \geometry{inner=2.5cm,outer=2.5cm,top=3cm,bottom=3cm}
 
@@ -181,8 +184,10 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \bibliography{bib/bibo.bib}{}
 \bibliographystyle{unsrt}
-{\small \listoffigures}
+\thispagestyle{fancy}
 
+\listoffigures
+\thispagestyle{fancy}
 
 
 \end{document}
