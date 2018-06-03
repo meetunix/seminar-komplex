@@ -12,7 +12,8 @@
 \usepackage[pdftex]{graphicx}
 \usepackage{hyperref}
 
-\geometry{inner=2cm,outer=1.5cm,top=2cm,bottom=2.4cm}
+
+\geometry{inner=2.5cm,outer=2.5cm,top=3cm,bottom=3cm}
 
 \definecolor{shadecolor}{gray}{.92}
 
@@ -84,10 +85,15 @@
 
 \date{\today}
 
+
+
+
 \begin{document}
 
 %\maketitle
 %\thispagestyle{fancy}
+
+
 
 \thispagestyle{empty}
 
@@ -99,7 +105,7 @@
   
   {\fontsize{22}{22}\selectfont Service und Security-Monitoring\\}
   \vspace{0.75cm}
-  {\fontsize{22}{22}\selectfont Seminar Aufbereitung und Auswertung komplexer Daten}
+  {\fontsize{20}{20}\selectfont Seminar:\\ Aufbereitung und Auswertung komplexer Daten}
 }
   
   \vspace{7.25cm}
@@ -108,7 +114,7 @@
     
     \vspace{.15cm}
     
-    Mai 2018}
+    Juni 2018}
   
   \vspace{1.5cm}
   
@@ -126,11 +132,56 @@
     \vspace{.15cm}
         
 \end{center}
+\newpage 
+\thispagestyle{empty}
+\quad  \addtocounter{page}{-2}
+\newpage
+ 
+\vspace*{\fill}
+\textbf{Exzerpt}\\\\
+    Servicemonitoring ist eine wichtige Voraussetzung um eine zuverlässige 
+    IT-Infrastruktur zu betreiben. Monitoring ist auch geeigent um IT-Sicherheitskritische
+    Ereignisse zu identifizieren und adäquat auf diese zu reagieren. Die Vorliegende
+    Arbeit bietet eine Einführung in die Thematik der Dienstüberwachung und stellt die
+    beiden Überwachungsformen Aktive- und Passive-Überwachung vor. Es wird zudem
+    die Frage geklärt, warum Servicemonitoring auch gleichzeitig Securitymonitoring ist.
+    Anschließend wird
+    anhand eines existierenden Prototypen aufgezeigt, wie eine Korrelation von 
+    Ereignissen in Cloud-Umgebungen realisiert werden kann. In Abschnitt vier wird
+    kurz auf eine schon verfügbare Lösungen im Bereich der Passiven-Überwachung 
+    vorgestellt. 
+\vspace*{\fill}
 
-\cleardoublepage
+
+\tableofcontents
 \thispagestyle{fancy}
 
-plop
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% CHAPTER Einführung
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\cleardoubleemptypage
+\include{01_einf}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\chapter{Logkorrelation in Cloud-Umgebungen}
+\thispagestyle{fancy}
+\include{03_jcorrelat}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\chapter{Weitere Lösungen zur passiven Überwachung}\label{elk}
+\thispagestyle{fancy}
+\include{04_elk}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\chapter{Ausblick}
+\thispagestyle{fancy}
+\include{05_ausbl}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\chapter{Fazit}
+\thispagestyle{fancy}
+\include{06_fazit}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\bibliography{bib/bibo.bib}{}
+\bibliographystyle{unsrt}
+{\small \listoffigures}
 
 
 

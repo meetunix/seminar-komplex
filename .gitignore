@@ -24,6 +24,11 @@
 *.vrb
 *.pygtex
 _minted*
+*.bbl
+*.blg
+*.bbg
+*.glsdefs
+*.lof
 
 
 
