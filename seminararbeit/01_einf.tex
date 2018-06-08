@@ -1,4 +1,4 @@
-\chapter{Einführung}
+\chapter{Einführung}\label{01_einf}
 \thispagestyle{fancy}
 
 In diesem Kapitel wird anhand der IT-Sicherheitsziele aufgezeigt, dass man unter dem
@@ -49,7 +49,7 @@ innerhalb eines gewissen Zeitraums erfolgreich ist.\\
 Die Verfügbarkeit gleicht damit auch der grundlegenden Fragestellung des 
 Servicemonitorings. Ist ein gewisser Dienst erreichbar und ist dessen 
 Abarbeitungsgeschwindigkeit in einem vorgegebenem Rahmen?\\\\
-
+\newpage
 \underline{\textbf{Integrität}}\\\\
 Integrität wird erreicht, wenn eine Änderung der Daten nicht unbemerkt geschieht. Es soll 
 somit ein Indikator für die Veränderung existieren. Um dieses Ziel zu erreichen werden
@@ -85,32 +85,37 @@ den Deutschen Bundestag im Jahr 2015 erwähnenswert, da auch in diesem Fall eini
 lang unbemerkt Daten abfließen konnten und das Ziel hoheitliches war, 
 Technologietransfer und finanzielle Absichten also eine untergeordnete Rolle gespielt 
 haben.
-\newpage
+%\newpage
 \subsection{Behörden mit Überwachungsauftrag}
 
 Aufgrund der zuvor dargestellten Gründe, wurden in den letzten Jahren eine Reihe an neuen 
 Behörden in der Bundesrepublik Deutschland gegründet, deren Auftrag die Überwachung 
 (Monitoring) wichtiger Infrastrukturen innerhalb der Grenzen der Bundesrepublik ist. Zum 
-Einen das Nationale Cyber-Abwehrzentrum (NCAZ) \cite{ncaz} mit Sitz in Bonn. Die Aufgabe 
+Einen das Nationale Cyber-Abwehrzentrum (NCAZ) \cite{web_ncaz} mit Sitz in Bonn. Die 
+Aufgabe 
 des NCAZ ist 
 die Koordinierung von Abwehrmaßnahmen und Informationskonsolidierung über den Aufbau von 
 rein ziviler Infrastruktur über mehrere Behörden hinweg. Das Nationale IT-Lagezentrum 
-\cite{lagezentrum} 
+\cite{web_lagezentrum} 
 Überwacht hingegen aktiv die Regierungsnetze und erstellt monatliche Lageberichte. Auf 
 militärischer Seite übernimmt der Bundeswehr-Organisationsbereich Cyber- und 
 Informationsraum (CIR) diese Aufgabe.
 
 \section{Überwachungsformen}
 
-Es lassen sich sich zwei verschiedene Überwachungsformen identifizieren die im Folgenden 
-vorgestellt werden.
+Es lassen sich zwei verschiedene Überwachungsformen identifizieren. Die aktive 
+Überwachung, bei der aktiv Status und Messwerte von Diensten erfragt werden, sowie die 
+passive Überwachung, bei der die Dienste selbstständig Meldungen an einen zentralen Punkt
+senden. Unter einem Dienst wird in diesen Beispielen nicht nur ein \textit{service oder 
+daemon} sondern ein jegliche Entität, deren Status Messbar ist, verstanden.
 
 \subsection{Aktive Überwachung}
 \begin{figure}[htbp]
+    \caption{Sequenzdiagramm: Aktive Überwachung}
+    \label{aktiv}\vspace{0.2cm}
     \centering
     \includegraphics[scale=0.36]{img/sequence_uml_active_trans}
-    \caption{Sequenzdiagramm: Aktive Überwachung}
-    \label{aktiv}
+
 \end{figure}
 
 Obiges Sequenzdiagramm zeigt schematisch den Ablauf aktiver Überwachung. \emph{Monitor} 
@@ -128,12 +133,17 @@ Klassifizierung von Ereignissen werden in Überwachungslösungen\footnote{zum Be
 Nagios, Icinga} oft verschiedene Status verwendet, dies dient hauptsächlich zum 
 schnelleren Verständnis für die auswertende Person. Aus diesem Grund wurden in 
 Abbildung \ref{aktiv} die Bezeichnungen für der Abfragefunktionen \texttt{getState()} und 
-\texttt{reState()} gewählt. Mögliche Status für die Rückgabe sind folgende:
+\texttt{reState()} gewählt. Mögliche Status für die Rückgabe sind in Tabelle 
+\ref{table:status} aufgeführt.
 
 \begin{table}[ht]
+    \caption{Statusübersicht}
+    \label{table:status}\vspace{0.2cm}
     \centering{
     \renewcommand{\arraystretch}{1.3}
+    
     \begin{tabular}{|l|l|}
+        
         \hline
        \rowcolor{gray!40} \textbf{Statusbezeichnung} & \textbf{Statusbeschreibung}\\
         \hline
@@ -144,16 +154,19 @@ Abbildung \ref{aktiv} die Bezeichnungen für der Abfragefunktionen \texttt{getSt
         \texttt{UNKNOWN}& Ein undefinierter Wert wurde an \emph{Monitor} übermittelt.\\
         \hline
     \end{tabular}
-    \caption{Statusübersicht}}
-    \label{t_status}
-\end{table}
+}
 
+\end{table}
+\newpage
 Mithilfe der Techniken zur aktiven Überwachung lassen sich zwei Klassen überwachbarer 
 Dienste identifizieren: Die Betriebssystemabhängigen und die Betriebssystemunabhängigen 
-Dienste.
+Dienste. Tabelle \ref{table:aktiv} listet einige Beispiele für die jeweilige Klasse auf.
 
 
+     
 \begin{table}[ht]
+\caption{Beispiele für aktive Überwachung}
+\label{table:aktiv}\vspace{0.2cm}
 \centering{
 \renewcommand{\arraystretch}{1.3}
 \begin{tabular}{|l|l|}
@@ -179,20 +192,24 @@ Dienste.
     \texttt{SNMP} & Abfrage beliebiger Kenngrößen\\
     \hline
 \end{tabular}
- \caption{Beispiele für aktive Überwachung}
- \label{t_aktiv}}
+
+
+}
 \end{table}
 
-
-
-
-
-
-\newpage
 \subsection{Passive Überwachung}
 \begin{figure}[htbp]
+    \caption{Passive Überwachung}
+    \label{passiv}\vspace{0.2cm}
     \centering
     \includegraphics[scale=0.36]{img/sequence_uml_passive_trans}
-    \caption{Passive Überwachung}
-    \label{passiv}
+
 \end{figure}
+
+Wie in Abbildung \ref{passiv} zu erkennen, werden bei der passiven Überwachung nur Daten
+ausgewertet, welche durch Dienste selbst generiert werden oder aber durch eine Software, 
+welche den Dienst lokal überwacht. Es erfolgt keine Abfrage bei den Diensten, der 
+zentrale Punkt, der die Auswertung übernimmt bleibt passiv und empfängt lediglich 
+Meldungen. Am häufigsten sind diese Meldungen LOG-Meldungen, generiert von einem 
+LOG-System. Aber auch SNMP-Traps fallen unter diese Kategorie, daher auch die Wahl der 
+Funktionen in Abbildung \ref{passiv}.
