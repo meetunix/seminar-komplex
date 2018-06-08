@@ -180,11 +180,20 @@
 \thispagestyle{fancy}
 \include{05_fazit}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\include{06_appendix}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \bibliography{bib/bibo.bib}{}
 \bibliographystyle{unsrt}
 \thispagestyle{fancy}
 
+%\listoffigures
+%\listoftables
 \listoffigures
+\begingroup
+\let\clearpage\relax
+\listoftables
+\endgroup
 \thispagestyle{fancy}
 
 
