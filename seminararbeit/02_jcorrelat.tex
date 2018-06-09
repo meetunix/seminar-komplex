@@ -333,8 +333,8 @@ Korrelation.
 Abbildung \ref{pic:benchmark} zeigt die Ergebnisse eines Benchmarks über das gesamte 
 Korrelationssystem hinweg.\\
 
-\textbf{File} zeigt die Anzahl der Meldungen nach der 
-Normalisierung wenn diese einfach lokal in Dateien geschrieben werden.\\
+\textbf{File} zeigt die Anzahl der Meldungen die normalisiert werden können, wenn die 
+normalisierten Syslog-Meldungen lokal in Dateien geschrieben werden.\\
 Die Balken \textbf{Mysql} und \textbf{ElasticSearch} demonstrieren die Anzahl der 
 normalisierten Syslog-Meldungen wenn diese direkt über \textit{rsyslog} eigene Module in 
 diese Datenbanken geschrieben werden. Es wird eine auf HTTP-basierende API verwendet.\\
@@ -345,10 +345,3 @@ HTTP-Verwaltungsaufwand entfällt.\\
 Bei \textbf{JCorrelat (2)} wurde auch die Korrelation aktiviert. Damit ist 
 \textit{JCorrelat} nicht langsamer als wenn nur normalisierte Syslog-Meldungen in eine 
 Datenbank geschrieben würden. 
-
-
-
-
-
-
- 

@@ -1,4 +1,25 @@
-\chapter{Fazit}
+\chapter{Fazit und Ausblick}
 \thispagestyle{fancy}
 
-lalla
+Mit \textit{JCorrelat} wurde ein Prototyp für die automatische Korrelation und 
+Konsolidierung von Syslog-Meldungen aus unterschiedlichen Quellen geschaffen. Wie die 
+Ergebnisse des Benchmark zeigen skaliert der Prototyp sehr gut, wenn für jede Anwendung 
+eine \textit{JCorrelat}-Instanz verwendet wird. Weniger Verwaltungsaufwand würde 
+allerdings die Verwendung einer (eventuell auch proprietären) 
+\textit{distributet-memory}-Lösung bieten, da dann die \textit{Drools-Fusion}-Regeln 
+global platziert werden könnten und jede \textit{Drools}-Instanz auf den selben Daten 
+arbeiten kann. Arbeitsspeicher ist auch der limitierende Faktor des Korrelationssystems, 
+je mehr Arbeitsspeicher zur Verfügung steht umso mehr und größere Betrachtungsfenster 
+kann \textit{Drools-Fusion} verwenden und so bessere Ergebnisse erzielen.\\
+
+Durch die Normalisierung der Syslog-Meldung wird eine sehr effiziente Verdichtung von 
+Informationen erreicht und Redundanzen werden größtenteils eliminiert. Das führt, neben 
+der damit verbundenen hohen Ausführungsgeschwindigkeit der Korrelation, auch zu einem 
+stark reduzierten Speicherbedarf für die persistente Speicherung. Durch die Wahl die 
+normalisierten und korrelierten Daten in \textit{elasticsearch} abzuspeichern, bieten 
+sich vielfältige Möglichkeiten der Auswertung und Visualisierung an. So Könnten bereits 
+bestehende Monitoringsysteme um Plugins erweitert werden, welche die durch 
+\textit{JCorrelat} erstellten Ereignisse periodisch abfragen und alarmieren können.\\
+
+Auch eine Korrelation von weiteren Daten ist realisierbar, so könnten die 
+Syslog-Meldungen auch mit Geo-Daten angereichert werde. 
