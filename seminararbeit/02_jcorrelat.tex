@@ -128,7 +128,7 @@ Abbildung \ref{log_example} die dazugehörige RFC 5424 konforme Nachricht. Die f
 die weitere Verwendung wichtigsten Felder wurden grün markiert. Dazu zählt der 
 Schweregrad (\textit{severity}), wobei 0 (\texttt{Emergency}) den höchsten und 7 
 (\texttt{DEBUG}) 
-den niedrigsten Schweregrad darstellt. Das \textit{tag}-Feld, was zum Beispiel die 
+den niedrigsten Schweregrad darstellt. Das \textit{tag}-Feld, das zum Beispiel die 
 Herkunft (Programm) und die zugehörige \textit{process ID} beinhalten kann. Am 
 wichtigsten ist das \textit{structured data}-Feld, welches mit beliebigen Informationen 
 gefüllt werden darf.
@@ -175,15 +175,93 @@ Daten bildet (Anhang: Abbildung \ref{app:liblognorm-normalisation}). Zusätzlich
 neue Meldung mit einem neuen \textit{syslog-tag} names \texttt{SSHFAILURE} oder 
 \texttt{SSHSUCCESS} versehen und an die Korrelationsinstanz weitergeleitet.\\
 
-\textit{liblognorm} normalisiert und seriealisiert Daten, die aus verschiedenen Quellen 
+\textit{liblognorm} normalisiert und serialisiert Daten, die aus verschiedenen Quellen 
 stammen und unterschiedlich kodiert sein können zu neuen Nachrichten. Damit werden 
 Redundanzen aus den Meldungen entfernt und eindeutige \textit{syslog-tags} zu schnelleren 
 Identifizierung durch die Korrelationsinstanz gesetzt. 
+
+
 \newpage
 
 \subsection{Korrelation von Syslog-Meldungen}\label{syslog-korrelation}
 
+Mithilfe der normalisierten Meldungen wird nun versucht ein Zusammenhang zwischen den 
+Syslog-Ereignissen zu erkennen. Diese Ereigniskorrelation ist der rechenaufwändigste 
+Schritt und kann daher, wie in Punkt \textbf{3} in Abbildung \ref{pic:jcorrelat} zu 
+erkennen ist, auf mehrere virtuelle Systeme verteilt werden.\\
 
+Die Korrelation der der Syslog-Meldungen durch \textit{JCorrelat} erfolgt mithilfe von 
+\textit{Drools-Fusion}\footnote{\url{https://www.drools.org/}}. \textit{Drools-Fusion} 
+ist eine \textit{Complex Event Processing Engine}, mit dessen Hilfe zeitliche 
+Schlussfolgerungen gezogen werden können. Um dieses Ziel zu erreichen werden Regeln 
+erstellt um spezielle Events zu beschreiben und alle Nachrichten die zu einer Regel 
+gehören werden analysiert, die restlichen Meldungen werden verworfen. Findet sich eine 
+zeitliche Übereinstimmung, wie in der Regel definiert, wird der Event ausgelöst, die 
+Nachricht wird mit einem \textit{syslog-tag} versehen und zur weiteren Analyse oder 
+Speicherung  weitergeleitet. \textit{Drools-Fusion} behält dazu alle relevanten 
+Syslog-Meldungen in einer \textit{in memory engine} vor und verwendet das Prinzip der 
+\textit{sliding windows} um Zusammenhänge zu erkennen. Abbildung \ref{pic:drools} 
+\cite[70]{drools-slide} demonstriert die Funktionsweise der \textit{sliding-windows}, ein 
+Quader ist in hier verwendeten Beispiel eine relevante Syslog-Meldung, die Fenster 
+analysieren immer eine gewisse Anzahl an Meldungen aus verschiedenen Quellen, die in 
+einem bestimmtem Zeitfenster erzeugt wurden. Erfüllt das \textit{joined-window} dann den 
+Bedingungen in der definierten Regel, kann ein Event ausgelöst werden.    
 
+\begin{figure}[htbp]
+    \caption{sliding window prinzip}
+    \label{pic:drools}\vspace{0.2cm}
+    \centering
+    \includegraphics[scale=0.36]{img/drools-slide-00}
+    
+\end{figure}
+
+Um nun, wie in Abschnitt \ref{szenario} beschrieben, einen erfolgreichen SSH Brute-Force 
+Angriff zu erkennen, muss zuerst eine Brute-Force-Attacke erkannt werden, dazu dient die 
+Regel \texttt{SSH brute-force attempt} (Anhang: \ref{app:drools-warning}). Die Regel 
+untersucht nur Syslog-Meldungen die mit dem \textit{syslog-tag} \texttt{SSHFAILURE} 
+versehen wurden. Es wird ein Event ausgelöst, wenn innerhalb von einer Minute vom 
+gleichen Quell-Host und dessen verwendeten Benutzernamen 10 oder mehr fehlgeschlagene 
+Login-versuche erfolgen. Als Event wird in diesem Fall eine neue Syslog-Meldung verfasst 
+und mit dem Schweregrad \texttt{WARNING} und dem \textit{syslog-tag} \texttt{BRUTEFORCE} 
+versehen. Die Meldung kann zum Beispiel persistent gespeichert werden (mehr dazu in 
+Abschnitt \ref{nosql}) und an einen Monitor weitergeleitet werden.\\
+
+Zur Erkennung einer erfolgreichen SSH Brute-Force-Attacke existiert ebenfalls eine 
+beispielhafte Regel (Anhang: \ref{app:drools-emergency}). Die Regel \texttt{Successful 
+SSH brute-force attack} löst einen Event aus, wenn innerhalb von 10 Sekunden nach dem 
+Auftreten von Meldungen mit dem \textit{syslog-tag} \texttt{BRUTEFORCE} und 
+\texttt{SSHFAILURE} und des zugehörigen Host und der verwendeten Benutzernamen, eine 
+Meldung mit dem \textit{syslog-tag} \texttt{SSHSUCCSESS} auftritt, welche vom 
+gleichen Host und aus der dazugehörigen Menge der Benutzernamen stammt.
+Die generierte Syslog-Meldung wird mit dem gewichtigsten Schweregrad \texttt{EMERGENCY} 
+und dem \textit{syslog-tag} \texttt{INCIDENT} markiert.\\
+
+Mit diesem beiden Regeln ist es \textit{JCorrelat} unter der Zuhilfenahme von 
+\textit{Drools-Fusion} möglich den einen Erfolgreichen Login unter tausenden 
+Loginversuchen innerhalb einer Brute-Force-Attacke zu identifizieren.
 
 \subsection{persistente Speicherung}\label{nosql}
+
+Neben der direkten Alarmierung von IT-Sicherheitskritischen Ereignissen, ist ein weiteres 
+Ziel der IT-Sicherheit die Verfügbarkeit der älterer Ereignisse um auch über längere 
+Zeiträume hinweg verbindlich Auskunft über den Zustand eines Systems zu geben, oder die 
+Daten mit neuen Methoden zu analysieren. Jedoch stellt die Speicherung von einer großen 
+Menge sich ändernder Daten eine große Herausforderung dar. Mit \textit{JCorrelat} ist es 
+möglich eine Vielzahl an Diensten zu überwachen, dabei können sich die zu betrachtenden 
+Daten ständig ändern und es können Dienste hinzukommen oder wegfallen.\\
+
+Eine erster Ansatz wäre die Speicherung der normalisierten Daten (Abschnitt 
+\ref{syslog-konsolidierung}) in einer relationalen Datenbank. Aufgrund der dynamischen 
+Natur der Daten müsste für eine effiziente Verarbeitung das Schema einer solchen 
+Datenbank stetig angepasst werden, dieser Aufwand ist enorm und nicht Zielführend.\\
+Im Gegensatz zum relationalen Ansatz wird bei \textit{NoSQL}-Datenbanken (Not only SQL) 
+kein, oder nur ein minimales Schema gespeichert. Somit erlaubt dieses Konzept zu jeder 
+Zeit eine Änderung der Struktur der Daten. Darüber hinaus lassen sich 
+\textit{NoSQL}-Datenbanken über viele Instanzen hinweg skalieren und liefern Daten sehr 
+schnell aus. Allerdings mit den Nachteil, dass nicht auf allen Systemen zeitgleich die 
+aktuellsten Daten zur Verfügung stehen.
+
+
+
+
+\subsection{Geschwindigkeitsbetrachtung}\label{performance}
