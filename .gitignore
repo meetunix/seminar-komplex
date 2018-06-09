@@ -1,5 +1,6 @@
 *.log
 *.swp
+*.~lock*
 
 #some packages
 *.7z

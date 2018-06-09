@@ -133,7 +133,7 @@ Herkunft (Programm) und die zugehörige \textit{process ID} beinhalten kann. Am
 wichtigsten ist das \textit{structured data}-Feld, welches mit beliebigen Informationen 
 gefüllt werden darf.
 
-\subsection{Konsolidierung von Syslog-Meldungen}\label{syslog-konsolidierung}
+\subsection{Normalisierung von Syslog-Meldungen}\label{syslog-konsolidierung}
 
 Diese Sektion erläutert Punkt \textbf{2} in Abbildung \ref{pic:jcorrelat}, es handelt 
 sich um den zentralen Syslog-Server. Als Software kommt die Open Source - Lösung 
@@ -208,7 +208,7 @@ einem bestimmtem Zeitfenster erzeugt wurden. Erfüllt das \textit{joined-window}
 Bedingungen in der definierten Regel, kann ein Event ausgelöst werden.    
 
 \begin{figure}[htbp]
-    \caption{sliding window prinzip}
+    \caption{\textit{sliding window}-Prinzip}
     \label{pic:drools}\vspace{0.2cm}
     \centering
     \includegraphics[scale=0.36]{img/drools-slide-00}
@@ -242,6 +242,8 @@ Loginversuchen innerhalb einer Brute-Force-Attacke zu identifizieren.
 
 \subsection{persistente Speicherung}\label{nosql}
 
+In diesem Abschnitt wird Punkt \textbf{4} aus Abbildung \ref{pic:jcorrelat} erläutert.\\
+
 Neben der direkten Alarmierung von IT-Sicherheitskritischen Ereignissen, ist ein weiteres 
 Ziel der IT-Sicherheit die Verfügbarkeit der älterer Ereignisse um auch über längere 
 Zeiträume hinweg verbindlich Auskunft über den Zustand eines Systems zu geben, oder die 
@@ -259,9 +261,94 @@ kein, oder nur ein minimales Schema gespeichert. Somit erlaubt dieses Konzept zu
 Zeit eine Änderung der Struktur der Daten. Darüber hinaus lassen sich 
 \textit{NoSQL}-Datenbanken über viele Instanzen hinweg skalieren und liefern Daten sehr 
 schnell aus. Allerdings mit den Nachteil, dass nicht auf allen Systemen zeitgleich die 
-aktuellsten Daten zur Verfügung stehen.
+aktuellsten Daten zur Verfügung stehen.\\
+
+Grundsätzlich lassen sich drei Konzepte von \textit{NoSQL}-Datenbanken identifizieren. 
+Zuerst sind die einfachen \textbf{\emph{key-value}}-Implementierungen zu nennen, diese 
+Datenbanken sind mit Abstand die schnellsten, da die Werte lediglich ein \textit{BLOB} 
+(Binary Large OBject) abgespeichert werden und somit nicht interpretiert werden. Damit 
+sind die Werte nicht durchsuchbar, umso einfache ist dafür die API.\\
+
+Die \textbf{\emph{column-oriented data stores}}-Lösungen speichern die Daten in Tabellen, 
+ähnlich wie relationale-Lösungen, jedoch werden die Zeilen einer Tabelle in sogenannte 
+shards (Scherben) unterteilt und die Spalten in Spaltengruppen, jeweils Abhängig von 
+ihrem Schlüssel. Damit ist das Tabellenschema beliebig erweiterbar, aber eine 
+Volltextsuche bietet diese Lösung nicht.\\
+
+Davon abweichend arbeiten die \textbf{\emph{document-based data stores}}, sie speichern 
+die Daten in \textit{documents} ab, welche eine Menge an beliebigen Argumenten mit einer 
+unterschiedlichen Anzahl an Attributen beschreiben. Neue Objekte dürfen jederzeit neu 
+angelegt werden und die Art und Anzahl ihrer \textit{key-value}-Paare ist nicht von 
+Interesse. Als größter Vorteil ist hier die Möglichkeit zur Volltextsuche zu nennen.\\
+
+Eben aus diesen letztgenannten Gründen kommt bei \textit{JCorrelat} 
+\textit{elasticsearch}\footnote{\url{https://www.elastic.co/products/elasticsearch}} zum 
+Einsatz, was die Konzepte eines \textbf{\emph{document-based data stores}} umsetzt. 
+\textit{JCorrelat} sendet die normalisierten und korrelierten Syslog-Meldungen direkt an 
+\textit{elasticsearch} für eine persistente Speicherung. Monitorsing- und 
+Visualisierungssysteme können nun periodisch auf diese Daten zugreifen und kritische 
+Ereignisse melden und visualisieren. Eine rudimentäre Visualisierung des SSH Brute-Force 
+-Szenarios wurde in \cite{reissmann} veröffentlicht (Abbildung \ref{pic:logvis}). 
+Alternative Möglichkeiten zu Visualisierung werden in Abschnitt \ref{ausblick} erläutert. 
+
+\begin{figure}[htbp]
+    \caption{Einfache Visualisierung durch JCorrelat}
+    \label{pic:logvis}\vspace{0.2cm}
+    \centering
+    \includegraphics[scale=0.42]{img/correlat-ui}  
+\end{figure}
+\newpage
+\subsection{Leistungsbetrachtung}\label{performance}
+
+Wie schon in Sektion \ref{nosql} erwähnt, kostet das Korrelieren der Syslog-Meldungen am 
+meisten Rechenzeit und ist daher der limitierende Faktor. Insbesondere stellt die 
+Skalierbarkeit von \textit{Drools-Fusion} ein Problem dar, da es auf \textit{in memory 
+engine} basiert, müssten mehrere Instanzen auf den gleichen Arbeitsspeicher zugreifen 
+können (\textit{distributed memory}). Jedoch existieren laut \cite{reissmann} dafür keine 
+Leistungsfähigen OpenSource-Lösungen, sodass eine Partitionierung nach Anwendung 
+empfohlen wird. Somit ist nur eine \textit{JCorrelat}-Instanz für eine Anwendung 
+zuständig. Es besteht ein Zusammenhang zwischen benötigten Arbeitsspeicher und der Größe 
+des Betrachtungsfensters, benötigt eine Regel ein längeres Betrachtungsfenster umso mehr 
+Meldungen müssen im Arbeitsspeicher gehalten werden.\\
+Untersucht wird auch die Geschwindigkeit von \textit{rsyslog}, der ohne Normalisierung 
+auf gängiger Hardware bei einer Syslog-Nachrichtengröße von 512 Byte über 200.000 
+Syslog-Meldungen verarbeiten kann und damit die maximale Anzahl an Nachrichten auf einer 
+1 GBit-Netzwerkschnittstelle verarbeiten kann.\\
+
+Für den Benchmark wurden mithilfe der Software 
+\textit{loggen}\footnote{\url{https://github.com/balabit/syslog-ng/blob/master/tests/loggen/loggen.md}}
+ eine 20.000 Meldungen umfassende Datei in Dauerschleife  eingelesen und die daraus 
+generierten Syslog-Meldungen an den Syslog-Server (Punkt \textbf{2} in Abbildung 
+\ref{pic:jcorrelat}) weitergeleitet. Die Datei bestand zu circa einem Drittel aus 
+SSH-Meldungen, der Rest waren andere übliche Syslog-Meldungen ohne Relevanz für die 
+Korrelation.
+
+\begin{figure}[htbp]
+    \caption{Ergebnisse des Benchmark}
+    \label{pic:benchmark}\vspace{0.2cm}
+    \centering
+    \includegraphics[scale=0.46]{img/benchmark}  
+\end{figure}
+
+Abbildung \ref{pic:benchmark} zeigt die Ergebnisse eines Benchmarks über das gesamte 
+Korrelationssystem hinweg.\\
+
+\textbf{File} zeigt die Anzahl der Meldungen nach der 
+Normalisierung wenn diese einfach lokal in Dateien geschrieben werden.\\
+Die Balken \textbf{Mysql} und \textbf{ElasticSearch} demonstrieren die Anzahl der 
+normalisierten Syslog-Meldungen wenn diese direkt über \textit{rsyslog} eigene Module in 
+diese Datenbanken geschrieben werden. Es wird eine auf HTTP-basierende API verwendet.\\
+Über 30.000 normalisierte Syslog-Meldungen \textbf{JCorrelat (1)} können hingegen mit 
+\textit{JCorrelat} über die \textit{elasticsearch}-API direkt in \textit{elasticsearch} 
+geschrieben werden, was die Differenz zum vorhergehenden Balken erklärt, da hier der 
+HTTP-Verwaltungsaufwand entfällt.\\
+Bei \textbf{JCorrelat (2)} wurde auch die Korrelation aktiviert. Damit ist 
+\textit{JCorrelat} nicht langsamer als wenn nur normalisierte Syslog-Meldungen in eine 
+Datenbank geschrieben würden. 
 
 
 
 
-\subsection{Geschwindigkeitsbetrachtung}\label{performance}
+
+
+ 
