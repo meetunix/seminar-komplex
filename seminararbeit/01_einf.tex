@@ -1,8 +1,8 @@
 \chapter{Einführung}\label{01_einf}
 \thispagestyle{fancy}
 
-In diesem Kapitel wird anhand der IT-Sicherheitsziele aufgezeigt, dass man unter dem
-Servicemonitoring auch immer den Begriff Securitymonitoring verstehen
+In diesem Kapitel wird anhand der IT-Sicherheitsziele aufgezeigt, dass man unter dem 
+Begriff Servicemonitoring auch immer den Begriff Securitymonitoring verstehen
 kann. Auch soll darauf hingewiesen werden, dass der Ausdruck Überwachung im ganzen
 Dokument mit der Bedeutung: Aufsicht oder Monitoring belegt wird um eine klare Abgrenzung
 zur zweiten Bedeutung: Observation, Beschattung (engl. surveillance) zu erlangen.
@@ -12,22 +12,21 @@ zur zweiten Bedeutung: Observation, Beschattung (engl. surveillance) zu erlangen
 
 Die Überwachung von Diensten ist mittlerweile ein integraler Bestandteil der 
 Infrastruktur jedes IT-~Diensteanbieters geworden. Neben der einfachen Erfassung
-und der (z.B. grafischen) Aufarbeitung dieser Messgrößen, werden die erfassten Daten
-zunehmend analysiert und es wird versucht Muster zu erkennen. Dieser Vorgang wird auch
-als \textit{BigData} bezeichnet. Diese Daten werden auch verstärkt zur Sicherheitsanalyse
-herangezogen. Daher stellt sich die Frage, ob Securitymonitoring äquivalent zum
-Servicemonitoring-Begriff ist. Um es vorweg zunehmen, ja, denn es kommt ausschließlich auf
-die Fragestellung an, die ich mit den erfasste Daten klären möchte. Im Folgenden werden 
-die drei Hauptziele der IT-Sicherheit aufgeschlüsselt und in Beziehung mit dem 
-Servicemonitoring gebracht.\\\\
+und der (z.B. grafischen) Aufarbeitung verschiedenster Messgrößen, werden die erfassten 
+Daten zunehmend analysiert und es wird versucht Muster zu erkennen. Dieser Vorgang wird 
+auch als \textit{BigData} bezeichnet. Diese Daten werden auch verstärkt zur 
+Sicherheitsanalyse herangezogen. Daher stellt sich die Frage, ob Securitymonitoring 
+äquivalent zum Servicemonitoring - Begriff ist. Um es vorweg zunehmen, ja, denn es kommt 
+ausschließlich auf die Fragestellung an, die man mit den erfassten Daten klären möchte. 
+Im Folgenden werden die drei Hauptziele der IT-Sicherheit aufgeschlüsselt und in 
+Beziehung mit dem Servicemonitoring - Begriff gebracht.\\\\
 
 \underline{\textbf{Vertraulichkeit}}\\\\
 Das Ziel der Vertraulichkeit sagt aus, dass der Zugriff auf Daten ausschließlich von
 autorisierten Nutzern erfolgen darf, egal in welchem Modus. Erreicht wird das Ziel zum
 Beispiel durch Zugriffsrechte\footnote{Unabhängig von der Umsetzungsstrategie, wie z.B. 
 Mandatory Access Contro (MAC) oder Discretionary Access Control(DAC)} und vor allem 
-durch 
-Verschlüsselung.\\
+durch Verschlüsselung.\\
 
 Die Frage, ob sich Vertraulichkeit überwachen lässt, ist nur teilweise beantwortbar.
 Stellt man sich ein System vor auf dem ein nicht autorisierter Nutzer Zugriff auf
@@ -36,11 +35,10 @@ zu generieren (z.B. eine Log-Meldung oder eine Nachricht an Verantwortliche). Wi
 jedoch ein autorisiertes Konto durch einen nicht autorisierten Nutzer kompromittiert,
 gestaltet sich die Entdeckung dieses Ereignisses schwieriger. Ob es sich in diesem Fall 
 um einen erlaubten Zugriff des tatsächlichen Nutzers oder einen nicht erlaubten Zugriff
-handelt kann nur unter der Zuhilfenahme weiterer Information geklärt werden,
-zum Beispiel könnte die Quelle (Kapitel \ref{elk}), von der aus sich der Nutzer Zugriff 
-verschafft hat,
-miteinbezogen werden. Auch die Korrelation mit Zeitdaten, an denen sich der 
-zugriffsberechtigte Nutzer einloggt, können zur Klärung hinzugezogen werden.\\\\
+handelt kann nur unter der Zuhilfenahme weiterer Information geklärt werden.
+Zum Beispiel könnte die Quelle (Kapitel \ref{elk}), von der aus sich der Nutzer Zugriff 
+verschafft hat, miteinbezogen werden. Auch die Korrelation mit Zeitdaten, an denen sich 
+der zugriffsberechtigte Nutzer einloggt, können zur Klärung hinzugezogen werden.\\\\
 
 \underline{\textbf{Verfügbarkeit}}\\\\
 Ob ein Dienst Verfügbar ist, wird dadurch geklärt, ob der Zugriff auf Informationen
@@ -62,8 +60,8 @@ errechnet hat. Ändert sich die Hashsumme, ohne das ein Zugriff auf die Daten ge
 wurde, ist dies ein Integritätsverlust.\\
 
 Zusammengefasst ist Monitoring von IT-Infrastruktur immer auch gleich Securitymonitoring. 
-Mithilfe eines lückenlos ausgerollten Monitorings ist es demnach möglich zu Beweisen zu 
-welchem Zeitpunkt ein gewisser Dienst welchen Zustand hatte.
+Mithilfe eines lückenlos ausgerollten Monitorings ist es demnach möglich einen Beweis zu 
+führen, zu welchem Zeitpunkt ein gewisser Dienst welchen Zustand hatte.
  
 \section{Motive}
 
@@ -77,15 +75,15 @@ Eigentums hat sich in den Jahren 2011-2015 verdoppelt.\\
 Auch der aktuelle, jährlich veröffentlichte Lagebericht zur nationalen IT-Sicherheit des
 Bundesamtes für Sicherheit in Informationstechnik (BSI) \cite[12]{bsi-lagebericht} 
 berichtet  
-von einer Cyberattacke auf eine großen deutschen Industriekonzern. Etwa zwei Monate 
-konnten unbemerkt Daten aus weltweit verteilten Standorten in Richtung Südostasien 
-abfließen bevor der Vorfall detektiert wurde. Aus den Empfehlungen des BSI lässt sich 
-schließen, dass neben einer ungünstigen Netzwerksegmentierung auch mangelhaftes Monitoring
-der Grund für die späte Erkennung war. In diesem Zusammenhang ist auch der Angriff auf 
-den Deutschen Bundestag im Jahr 2015 erwähnenswert, da auch in diesem Fall einige Wochen 
-lang unbemerkt Daten abfließen konnten und das Ziel hoheitliches war, 
-Technologietransfer und finanzielle Absichten also eine untergeordnete Rolle gespielt 
-haben.
+von einer Cyberattacke auf eine großen deutschen Industriekonzern. Etwa \textbf{zwei 
+Monate} konnten unbemerkt Daten aus weltweit verteilten Standorten in Richtung 
+Südostasien abfließen bevor der Vorfall detektiert wurde. Aus den Empfehlungen des BSI 
+lässt sich schließen, dass neben einer ungünstigen Netzwerksegmentierung auch 
+mangelhaftes Monitoring der Grund für die späte Erkennung war. In diesem Zusammenhang ist 
+auch der Angriff auf den Deutschen Bundestag im Jahr 2015 erwähnenswert, da auch in 
+diesem Fall einige Wochen lang unbemerkt Daten abfließen konnten und das Ziel 
+hoheitliches war, Technologietransfer und finanzielle Absichten also eine untergeordnete 
+Rolle gespielt haben.
 %\newpage
 \subsection{Behörden mit Überwachungsauftrag}
 
@@ -93,22 +91,20 @@ Aufgrund der zuvor dargestellten Gründe, wurden in den letzten Jahren eine Reih
 Behörden in der Bundesrepublik Deutschland gegründet, deren Auftrag die Überwachung 
 (Monitoring) wichtiger Infrastrukturen innerhalb der Grenzen der Bundesrepublik ist. Zum 
 Einen das Nationale Cyber-Abwehrzentrum (NCAZ) \cite{web_ncaz} mit Sitz in Bonn. Die 
-Aufgabe 
-des NCAZ ist 
-die Koordinierung von Abwehrmaßnahmen und Informationskonsolidierung über den Aufbau von 
-rein ziviler Infrastruktur über mehrere Behörden hinweg. Das Nationale IT-Lagezentrum 
-\cite{web_lagezentrum} 
-Überwacht hingegen aktiv die Regierungsnetze und erstellt monatliche Lageberichte. Auf 
-militärischer Seite übernimmt der Bundeswehr-Organisationsbereich Cyber- und 
-Informationsraum (CIR) diese Aufgabe.
+Aufgabe des NCAZ ist die Koordinierung von Abwehrmaßnahmen und Informationskonsolidierung 
+über den Aufbau von rein ziviler Infrastruktur über mehrere Behörden hinweg. Das 
+Nationale IT-Lagezentrum \cite{web_lagezentrum} überwacht hingegen aktiv die 
+Regierungsnetze und erstellt monatliche Lageberichte. Auf militärischer Seite übernimmt 
+der Bundeswehr-Organisationsbereich Cyber- und Informationsraum (CIR) diese Aufgabe.
 
 \section{Überwachungsformen}
 
 Es lassen sich zwei verschiedene Überwachungsformen identifizieren. Die aktive 
 Überwachung, bei der aktiv Status und Messwerte von Diensten erfragt werden, sowie die 
-passive Überwachung, bei der die Dienste selbstständig Meldungen an einen zentralen Punkt
-senden. Unter einem Dienst wird in diesen Beispielen nicht nur ein \textit{service oder 
-daemon} sondern ein jegliche Entität, deren Status Messbar ist, verstanden.
+passive Überwachung, bei der die Dienste selbstständig Meldungen an einen zentralen 
+Punkt, den Monitor, senden. Unter einem Dienst wird in diesen Beispielen nicht nur ein 
+\textit{service} oder \textit{daemon} sondern jegliche Entität, deren Status Messbar ist, 
+verstanden.
 
 \subsection{Aktive Überwachung}
 \begin{figure}[htbp]
@@ -119,18 +115,18 @@ daemon} sondern ein jegliche Entität, deren Status Messbar ist, verstanden.
 
 \end{figure}
 
-Obiges Sequenzdiagramm zeigt schematisch den Ablauf aktiver Überwachung. \emph{Monitor} 
-ist die zentrale Instanz auf der alle zu überwachenden Informationen gesammelt, 
-aufbereitet und ausgegeben werden. Jedoch muss der \emph{Monitor} nicht alle Information
-sammeln, es können auch hierarchisch untergeordnete \emph{Aggregatoren} existieren, 
-welche ebenfalls Informationen von verschiedenen Diensten erheben. Diese 
-\emph{Aggregatoren} können aus Leistungsgründen vor einen \emph{Monitor} geschaltet 
-werden, um die Anzahl an abzufragenden Diensten für den \emph{Monitor} zu verringern. In 
-diesem Fall bereitet bereits der \emph{Aggregator} die Daten auf und der \emph{Monitor} 
-fragt nur noch die schon konsolidierten Informationen ab. Aber auch Segmentierungen von 
-Infrastruktur können diesen Aufbau notwendig machen, wenn z.B. \emph{Monitor} 
-\emph{Dienst A} und \emph{Dienst B} nicht direkt erreichen kann oder darf. Zur 
-Klassifizierung von Ereignissen werden in Überwachungslösungen\footnote{zum Beispiel: 
+Obiges Sequenzdiagramm (Abbildung \ref{aktiv}) zeigt schematisch den Ablauf von aktiver 
+Überwachung. \emph{Monitor} ist die zentrale Instanz auf der alle zu überwachenden 
+Informationen gesammelt, aufbereitet und ausgegeben werden. Jedoch muss der 
+\emph{Monitor} nicht alle Information sammeln, es können auch hierarchisch untergeordnete 
+\emph{Aggregatoren} existieren, welche ebenfalls Informationen von verschiedenen Diensten 
+erheben. Diese \emph{Aggregatoren} können aus Leistungsgründen vor einen \emph{Monitor} 
+geschaltet werden, um die Anzahl an abzufragenden Diensten für den \emph{Monitor} zu 
+verringern. In diesem Fall bereitet bereits der \emph{Aggregator} die Daten auf und der 
+\emph{Monitor} fragt nur noch die schon konsolidierten Informationen ab. Aber auch 
+Segmentierungen von Infrastruktur können diesen Aufbau notwendig machen, wenn z.B. 
+\emph{Monitor} \emph{Dienst A} und \emph{Dienst B} nicht direkt erreichen kann oder darf. 
+Zur Klassifizierung von Ereignissen werden in Überwachungslösungen\footnote{zum Beispiel: 
 Nagios, Icinga} oft verschiedene Status verwendet, dies dient hauptsächlich zum 
 schnelleren Verständnis für die auswertende Person. Aus diesem Grund wurden in 
 Abbildung \ref{aktiv} die Bezeichnungen für der Abfragefunktionen \texttt{getState()} und 
@@ -157,10 +153,10 @@ Abbildung \ref{aktiv} die Bezeichnungen für der Abfragefunktionen \texttt{getSt
     \end{tabular}
 }
 
-Ein Visualisierungsbeispiel für einen Statusverlauf eines überwachten Dienstes befindet 
-sich im Anhang (Abbildung \ref{pic:nag}).
-
 \end{table}
+Ein Visualisierungsbeispiel für einen Statusverlauf eines überwachten Dienstes befindet 
+sich im Anhang (Abbildung \ref{app:nag}).
+
 \newpage
 Mithilfe der Techniken zur aktiven Überwachung lassen sich zwei Klassen überwachbarer 
 Dienste identifizieren: Die Betriebssystemabhängigen und die Betriebssystemunabhängigen 
@@ -193,7 +189,7 @@ Dienste. Tabelle \ref{table:aktiv} listet einige Beispiele für die jeweilige Kl
     \texttt{TCP/UDP} & ist bestimmter \emph{port} erreichbar\\
     Anwendungsprotokolle & Login möglich / Referenzdaten abrufbar / Rückgabewerte 
     Testroutinen\\
-    \texttt{SNMP} & Abfrage beliebiger Kenngrößen\\
+    \texttt{SNMP} & Abfrage beliebiger und zum Teil standardisierter Messwerte\\
     \hline
 \end{tabular}
 
@@ -212,8 +208,8 @@ Dienste. Tabelle \ref{table:aktiv} listet einige Beispiele für die jeweilige Kl
 
 Wie in Abbildung \ref{passiv} zu erkennen, werden bei der passiven Überwachung nur Daten
 ausgewertet, welche durch Dienste selbst generiert werden oder aber durch eine Software, 
-welche den Dienst lokal überwacht. Es erfolgt keine Abfrage bei den Diensten, der 
-zentrale Punkt, der die Auswertung übernimmt bleibt passiv und empfängt lediglich 
-Meldungen. Am häufigsten sind diese Meldungen LOG-Meldungen, generiert von einem 
-LOG-System. Aber auch SNMP-Traps fallen unter diese Kategorie, daher auch die Wahl der 
-Funktionen in Abbildung \ref{passiv}.
+welche den Dienst lokal überwacht. Es erfolgt keine Abfrage bei den Diensten. Der 
+zentrale Punkt, welcher auch die Auswertung übernimmt, bleibt passiv und empfängt 
+lediglich Meldungen. Am häufigsten sind diese Meldungen LOG-Meldungen, generiert von 
+einem LOG-System. Aber auch SNMP-Traps fallen unter diese Kategorie, daher auch die Wahl 
+der Funktionsbezeichner in Abbildung \ref{passiv}.
