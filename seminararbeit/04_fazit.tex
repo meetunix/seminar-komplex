@@ -8,18 +8,31 @@ eine \textit{JCorrelat}-Instanz verwendet wird. Weniger Verwaltungsaufwand würd
 allerdings die Verwendung einer (eventuell auch proprietären) 
 \textit{distributet-memory}-Lösung bieten, da dann die \textit{Drools-Fusion}-Regeln 
 global platziert werden könnten und jede \textit{Drools}-Instanz auf den selben Daten 
-arbeiten kann. Arbeitsspeicher ist auch der limitierende Faktor des Korrelationssystems, 
+operieren kann. Arbeitsspeicher ist auch der limitierende Faktor des Korrelationssystems, 
 je mehr Arbeitsspeicher zur Verfügung steht umso mehr und größere Betrachtungsfenster 
 kann \textit{Drools-Fusion} verwenden und so bessere Ergebnisse erzielen.\\
+Wie fortlaufend am Beispiel aus Sektion \ref{szenario} gezeigt, ist der Prototyp in der 
+Lage Sicherheitskritische Ereignisse sicher zu identifizieren und eignet sich so bestens 
+für die Überwachung von großen IT-Umgebungen.\\
 
 Durch die Normalisierung der Syslog-Meldung wird eine sehr effiziente Verdichtung von 
-Informationen erreicht und Redundanzen werden größtenteils eliminiert. Das führt, neben 
-der damit verbundenen hohen Ausführungsgeschwindigkeit der Korrelation, auch zu einem 
-stark reduzierten Speicherbedarf für die persistente Speicherung. Durch die Wahl die 
+Informationen erreicht und Redundanzen werden größtenteils eliminiert. Das führt neben 
+der damit verbundenen hohen Ausführungsgeschwindigkeit der Korrelation auch zu einem 
+stark reduzierten Speicherbedarf für die persistente Speicherung. Durch die Wahl, die 
 normalisierten und korrelierten Daten in \textit{elasticsearch} abzuspeichern, bieten 
 sich vielfältige Möglichkeiten der Auswertung und Visualisierung an. So Könnten bereits 
-bestehende Monitoringsysteme um Plugins erweitert werden, welche die durch 
-\textit{JCorrelat} erstellten Ereignisse periodisch abfragen und alarmieren können.\\
+bestehende Monitoringsysteme um Plugins erweitert werden, welche die zuvor erstellten 
+Ereignisse periodisch abfragen und somit alarmieren können.\\
 
 Auch eine Korrelation von weiteren Daten ist realisierbar, so könnten die 
-Syslog-Meldungen auch mit Geo-Daten angereichert werde. 
+Syslog-Meldungen zum Beispiel mit Geo- oder Performance-Informationen angereichert 
+werden. Falls nicht genügend Arbeitsspeicher zur Verfügung steht, aber eine hohe 
+Korrelationsgenauigkeit erreicht werden soll und die Korrelationsgeschwindigkeit keine 
+Rolle spielt, könnte \textit{JCorrelat} auch auf den Datenbestand in 
+\textit{elasticsearch} zugreifen.\\
+Um nicht alle Regeln (je Dienst) einzeln konfigurieren zu müssen, soll das Ziel sein, 
+\textit{JCorrelat} mit Vorlagen konfigurieren zu können. Damit könnten neu hinzukommende 
+Dienste einer automatischen Korrelation unterzogen werden. Darüber hinaus wäre auch eine 
+Integration in \textit{kubernetes}\footnote{\url{https://kubernetes.io/}}, 
+\textit{openstack}\footnote{\url{https://www.openstack.org/}} oder dem ELK-Stack 
+(Abschnitt \ref{ausblick}) erstrebenswert. 
