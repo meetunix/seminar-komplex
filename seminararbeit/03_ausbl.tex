@@ -7,19 +7,19 @@ visualisieren. Aus diesem Grund wurde auf der Basis von \cite{kleindienst} ein
 ELK-Stack aufgebaut um weitere beispielhafte Visualisierungen vorzustellen. Der 
 Aufbau des verwendeten ELK-Stacks ist Schematisch in Abbildung \ref{app:demo-elk} (Anhang)
 dargestellt. Für die Visualisierung zeigt sich die \textit{Kibana} verantwortlich.\\
-Abbildung \ref{pic:elk-01} zeigt eine durch \textit{Kibana} erstellte Visualisierung, 
-dabei \textit{Kibana} greift es auf Daten zurück, die durch \textit{Logstash} 
+Abbildung \ref{pic:elk-01} zeigt eine durch \textit{Kibana} erstellte Visualisierung. 
+Dabei greift \textit{Kibana} auf Daten zurück, die durch \textit{Logstash} 
 strukturiert in \textit{elasticsearch} abgelegt wurden.
 Ähnlich wie im Beispielszenario, (Abschnitt \ref{szenario}) sind auch hier 
-fehlgeschlagene SSH-Logins anschaulich gemacht. Die IP-Quelladressen wurden dabei 
+fehlgeschlagene SSH-Logins veranschaulicht. Die IP-Quelladressen wurden dabei 
 mithilfe von \textit{Geotargeting} einer möglichen Region zugewiesen, ebenso die Anzahl 
 der erfolglosen Loginversuche aus dieser Region über einen vorher definierten Zeitraum. 
 Der Kreisdurchmesser hat keinerlei Bedeutung, lediglich der Farbverlauf gibt in fünf 
 dynamisch errechneten Abstufungen die Anzahl der erfolglosen Versuche an, wie man am 
-Beispiel Kiev deutlich sieht. Um auch alle Erfolgreichen Logins anzuzeigen ist eine 
+Beispiel Kiev deutlich sieht. Um auch alle erfolgreichen Logins anzuzeigen ist eine 
 weitere Karte notwendig (Abbildung \ref{pic:elk-02}).\\
 Diese Form der Illustration würde sich auch für \textit{JCorrelat} anbieten, dann 
-könnten die Ereignisse (Bruet-Force-Attacke und erfolgreicher Login während einer Attacke)
+könnten die Ereignisse (Brute-Force-Attacke und erfolgreicher Login während einer Attacke)
 auf einer Karte darstellt werden.
 
 \begin{figure}[htbp]

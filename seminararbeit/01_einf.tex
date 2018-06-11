@@ -24,11 +24,11 @@ Beziehung mit dem Servicemonitoring - Begriff gebracht.\\\\
 \underline{\textbf{Vertraulichkeit}}\\\\
 Das Ziel der Vertraulichkeit sagt aus, dass der Zugriff auf Daten ausschließlich von
 autorisierten Nutzern erfolgen darf, egal in welchem Modus. Erreicht wird das Ziel zum
-Beispiel durch Zugriffsrechte, wie z.B. Mandatory Access Control (MAC) und 
-\footnote{Zugriffkontrollstrategie aus systemweiten Regeln, 
+Beispiel durch Zugriffsrechte, wie z.B. Mandatory Access Control
+(MAC)\footnote{Zugriffskontrollstrategie aus systemweiten Regeln, 
 bei der nicht nur die Nutzeridentität ein Rolle spielt.} oder Discretionary Access 
-Control(DAC)\footnote{Zugriffskontrollstrategie, bei der lediglich nie Nutzeridentität 
-eine Rolle spiel (übliches Rechtesystem).} und vor allem durch Verschlüsselung.\\
+Control (DAC)\footnote{Zugriffskontrollstrategie, bei der lediglich die Nutzeridentität 
+eine Rolle spielt (übliches Rechtesystem).} und vor allem durch Verschlüsselung.\\
 
 Die Frage, ob sich Vertraulichkeit überwachen lässt, ist nur teilweise beantwortbar.
 Stellt man sich ein System vor auf dem ein nicht autorisierter Nutzer Zugriff auf
@@ -38,13 +38,13 @@ jedoch ein autorisiertes Konto durch einen nicht autorisierten Nutzer kompromitt
 gestaltet sich die Entdeckung dieses Ereignisses schwieriger. Ob es sich in diesem Fall 
 um einen erlaubten Zugriff des tatsächlichen Nutzers oder einen nicht erlaubten Zugriff
 handelt kann nur unter der Zuhilfenahme weiterer Information geklärt werden.
-Zum Beispiel könnte die Quelle (Kapitel \ref{ausblick}), von der aus sich der Nutzer 
+Zum Beispiel könnte die Quelle, von der aus sich der Nutzer 
 Zugriff verschafft hat, miteinbezogen werden. Auch die Korrelation mit Zeitdaten, an 
 denen sich der zugriffsberechtigte Nutzer einloggt, können zur Klärung hinzugezogen 
 werden.\\\\
 
 \underline{\textbf{Verfügbarkeit}}\\\\
-Ob ein Dienst Verfügbar ist, wird dadurch geklärt, ob der Zugriff auf Informationen
+Ob ein Dienst verfügbar ist, wird dadurch geklärt, ob der Zugriff auf Informationen
 innerhalb eines gewissen Zeitraums erfolgreich ist.\\
 
 Die Verfügbarkeit gleicht damit auch der grundlegenden Fragestellung des 
@@ -53,13 +53,13 @@ Abarbeitungsgeschwindigkeit in einem vorgegebenem Rahmen?\\\\
 \newpage
 \underline{\textbf{Integrität}}\\\\
 Integrität wird erreicht, wenn eine Änderung der Daten nicht unbemerkt geschieht. Es soll 
-somit ein Indikator für die Veränderung existieren. Um dieses Ziel zu erreichen werden
+somit ein Indikator für die Veränderung existieren. Um dieses Ziel zu erreichen, werden
 Verfahren wie digitale Signatur und Hashes verwendet.\\
 
-Auch das Ziel der Integrität lässt sich kontrollieren, dazu finden die selben Maßnahmen 
+Auch das Ziel der Integrität lässt sich kontrollieren. Dazu finden die selben Maßnahmen 
 Verwendung wie in der IT-Sicherheit. Es lassen sich zum Beispiel auf regelmäßiger Basis 
 Daten prüfen, von denen man vorher mit einem kryptografisch sicheren Verfahren ein Hash 
-errechnet hat. Ändert sich die Hashsumme, ohne das ein Zugriff auf die Daten genehmigt 
+errechnet hat. Ändert sich die Hashsumme, ohne dass ein Zugriff auf die Daten genehmigt 
 wurde, ist dies ein Integritätsverlust.\\
 
 Zusammengefasst ist Monitoring von IT-Infrastruktur immer auch gleich Securitymonitoring. 
@@ -68,24 +68,26 @@ führen, zu welchem Zeitpunkt ein gewisser Dienst welchen Zustand hatte.
  
 \section{Motive}
 
-Der Grund warum eine dauerhafte Überwachung von Infrastruktur und den darauf aufbauenden 
+Warum eine dauerhafte Überwachung von Infrastruktur und den darauf aufbauenden 
 Diensten keine Option sondern obligatorisch sein sollte, ist recht simpel zu erörtern. 
-Allein die in \cite[461]{francia} berichteten Zahlen sprechen für sich. $90\,\%$ aller 
+Allein die in \cite[Seite 461]{francia} berichteten Zahlen sprechen für sich. $90\,\%$ 
+aller 
 Firmen waren schon Cyberattacken ausgesetzt, $80\,\%$ davon haben dadurch erhebliche 
 finanzielle Einbußen erlitten. Aktuell werden innerhalb eines Jahres $86\,\%$ der großen 
 nordamerikanischen Unternehmen Opfer von Cyberattacken und der Diebstahl des geistigen 
 Eigentums hat sich in den Jahren 2011-2015 verdoppelt.\\
-Auch der aktuelle, jährlich veröffentlichte Lagebericht zur nationalen IT-Sicherheit des
-Bundesamtes für Sicherheit in Informationstechnik (BSI) \cite[12]{bsi-lagebericht} 
-berichtet  
-von einer Cyberattacke auf eine großen deutschen Industriekonzern. Etwa \textbf{zwei 
+Auch der aktuelle jährlich veröffentlichte Lagebericht zur nationalen IT-Sicherheit des
+Bundesamtes für Sicherheit in der Informationstechnik (BSI) \cite[Seite 
+12]{bsi-lagebericht} 
+berichtet von einer Cyberattacke auf einen großen deutschen Industriekonzern. Etwa 
+\textbf{zwei 
 Monate} konnten unbemerkt Daten aus weltweit verteilten Standorten in Richtung 
-Südostasien abfließen bevor der Vorfall detektiert wurde. Aus den Empfehlungen des BSI 
+Südostasien abfließen, bevor der Vorfall detektiert wurde. Aus den Empfehlungen des BSI 
 lässt sich schließen, dass neben einer ungünstigen Netzwerksegmentierung auch 
 mangelhaftes Monitoring der Grund für die späte Erkennung war. In diesem Zusammenhang ist 
 auch der Angriff auf den Deutschen Bundestag im Jahr 2015 erwähnenswert, da auch in 
 diesem Fall einige Wochen lang unbemerkt Daten abfließen konnten und das Ziel 
-hoheitliches war, Technologietransfer und finanzielle Absichten also eine untergeordnete 
+hoheitlich war, Technologietransfer und finanzielle Absichten also eine untergeordnete 
 Rolle gespielt haben.
 %\newpage
 \subsection{Behörden mit Überwachungsauftrag}
@@ -106,10 +108,8 @@ Es lassen sich zwei verschiedene Überwachungsformen identifizieren. Die aktive
 Überwachung, bei der aktiv Status und Messwerte von Diensten erfragt werden, sowie die 
 passive Überwachung, bei der die Dienste selbstständig Meldungen an einen zentralen 
 Punkt, den Monitor, senden. Unter einem Dienst wird in diesen Beispielen nicht nur ein 
-\textit{service} oder \textit{daemon}\footnote{Bezeichnung eines Dienstes auf 
-Unix-basierenden Systemen.} sondern jegliche Entität, deren Status Messbar ist, 
-verstanden.
-
+\textit{service} sondern jegliche Entität, deren Status messbar ist, verstanden.
+\newpage
 \subsection{Aktive Überwachung}
 \begin{figure}[htbp]
     \caption{Sequenzdiagramm: Aktive Überwachung}
@@ -120,21 +120,23 @@ verstanden.
 \end{figure}
 
 Obiges Sequenzdiagramm (Abbildung \ref{aktiv}) zeigt schematisch den Ablauf von aktiver 
-Überwachung. \emph{Monitor} ist die zentrale Instanz auf der alle zu überwachenden 
+Überwachung. Der \emph{Monitor} ist die zentrale Instanz auf der alle zu überwachenden 
 Informationen gesammelt, aufbereitet und ausgegeben werden. Jedoch muss der 
-\emph{Monitor} nicht alle Information sammeln, es können auch hierarchisch untergeordnete 
+\emph{Monitor} nicht alle Informationen sammeln, es können auch hierarchisch 
+untergeordnete 
 \emph{Aggregatoren} existieren, welche ebenfalls Informationen von verschiedenen Diensten 
 erheben. Diese \emph{Aggregatoren} können aus Leistungsgründen vor einen \emph{Monitor} 
 geschaltet werden, um die Anzahl an abzufragenden Diensten für den \emph{Monitor} zu 
 verringern. In diesem Fall bereitet bereits der \emph{Aggregator} die Daten auf und der 
 \emph{Monitor} fragt nur noch die schon konsolidierten Informationen ab. Aber auch 
 Segmentierungen von Infrastruktur können diesen Aufbau notwendig machen, wenn z.B. 
-\emph{Monitor} \emph{Dienst A} und \emph{Dienst B} nicht direkt erreichen kann oder darf. 
+der \emph{Monitor} \emph{Dienst A} und \emph{Dienst B} nicht direkt erreichen kann oder 
+darf. 
 Zur Klassifizierung von Ereignissen werden in Überwachungslösungen\footnote{zum Beispiel: 
 Nagios, Icinga} oft verschiedene Status verwendet, dies dient hauptsächlich zum 
 schnelleren Verständnis für die auswertende Person. Aus diesem Grund wurden in 
 Abbildung \ref{aktiv} die Bezeichnungen für der Abfragefunktionen \texttt{getState()} und 
-\texttt{reState()} gewählt. Mögliche Status für die Rückgabe sind in Tabelle 
+\texttt{retState()} gewählt. Mögliche Status für die Rückgabe sind in Tabelle 
 \ref{table:status} aufgeführt.
 
 \begin{table}[ht]
@@ -183,7 +185,7 @@ Dienste. Tabelle \ref{table:aktiv} listet einige Beispiele für die jeweilige Kl
     Speicher & Speicherauslastung des Systems/ Belegung persistenter Speicher\\
     Prozesse & läuft ein bestimmter Prozess/ wie viele Prozesse eines Namens laufen\\
     Datendurchsatz & wie viele Bytes passieren ein Interface, Anzahl an
-    \emph{paket-drops},\emph{rejects}\\
+    \emph{paket-drops}, \emph{rejects}\\
     Audit & wurden Zugriffsregeln verletzt/ welcher Nutzer hat auf Datei X zugegriffen\\
     \hline
     \multicolumn{2}{|l|}{\cellcolor{shadecolor}\textbf{Betriebssystemunabhängig}}\\

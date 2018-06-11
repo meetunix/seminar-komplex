@@ -5,12 +5,12 @@ Im folgenden Kapitel wird eine Forschungsarbeit der Fachhochschule Fulda
 \cite{reissmann} vorgestellt. Ziel der Forschung war und ist es, ein gut skalierendes 
 System zu entwickeln um eine automatisierte Auswertung von Syslog-Meldungen in 
 Cloud-Umgebungen bereit zu stellen. Aufgrund der enormen Datenmengen die in solchen 
-Umgebungen anfallen kann eine Auswertung nur mittels korrelations- und 
-Aggregationsverfahren geschehen. Um dieses Ziel zu erreichen kommen verschiedene 
+Umgebungen anfallen, kann eine Auswertung nur mittels korrelations- und 
+Aggregationsverfahren geschehen. Um dieses Ziel zu erreichen, kommen verschiedene 
 Standards und eine Reihe von Software-Lösungen zum Einsatz.
 
 Nachfolgend werden einige wichtige Begriffe geklärt, die Anforderungen identifiziert, die 
-verwendeten Standards und die eingesetzte Software erläutert und im Weiteren Verlauf des 
+verwendeten Standards und die eingesetzte Software erläutert und im weiteren Verlauf des 
 Abschnitts wird anhand eines Beispiels eine Syslog-Korrelation vorgenommen.
 
 \section{Anforderungen}\label{anforderungen}
@@ -20,7 +20,7 @@ ausgelagert. Laut Analysen werden bis 2025 80 \% aller Unternehmen \cite{web_ix}
 weltweit ihre eigene Rechenzentrumsinfrastruktur abgeschaltet haben. Die wenigen Anbieter 
 von Cloud-Lösungen stehen in Konkurrenz miteinander, daher existieren auch keine 
 einheitlichen Schnittstellen um auf die Cloud-Konfigurationen zuzugreifen. Für die 
-Überwachung, speziell von Sicherheitskritischen Ereignissen, stehen ebenso nur 
+Überwachung, speziell von sicherheitskritischen Ereignissen, stehen ebenso nur 
 proprietäre Schnittstellen jedes Anbieters zur Verfügung. Aus diesem Grund soll ein 
 System geschaffen werden, das die gewaltige Menge an aufkommenden Logdaten, unabhängig 
 vom Anbieter, analysiert und sicherheitskritische Ereignisse unverzüglich 
@@ -29,15 +29,15 @@ Syslog-Aufkommen beherrschen können. Denn durch die fluide Kostenstruktur der
 Cloud-Anbieter können schnell neue virtuelle Maschinen erstellt und entfernt werden, je 
 nachdem wie viel Leistung der Kunde gerade benötigt.
 Darüber hinaus sollen Meldungen auch persistent gespeichert werden, vornehmlich zur 
-Erstellung von Trends und Langzeitanalysen, dabei soll der benötigte Speicherplatz so 
+Erstellung von Trends und Langzeitanalysen. Dabei soll der benötigte Speicherplatz so 
 gering wie möglich gehalten werden.
 
 \section{Beispielszenario}\label{szenario}
 
 Im weiteren Verlauf dieses Kapitels soll zur detaillierteren Darstellung der 
 Leistungsfähigkeit einer automatischen Syslog-Korrelation ein gängiges 
-Angriffsszenario dienen. Eine \textit{ssh}-BruteForce Attacke auf eine beliebige Anzahl
-an überwachten Systemen. Dabei soll genau der eine erfolgreiche Login innerhalb  der 
+Angriffsszenario dienen: Eine SSH-BruteForce Attacke auf eine beliebige Anzahl
+der überwachten Systeme. Dabei soll genau der eine erfolgreiche Login innerhalb  der 
 enormen Anzahl an erfolglosen oder ungültigen Versuchen identifiziert werden. Dieses 
 recht einfache Szenario ist bei der erheblichen Anzahl an möglichen Systemen (10K+) 
 manuell unmöglich zu bewerkstelligen.
@@ -45,7 +45,7 @@ manuell unmöglich zu bewerkstelligen.
 \newpage
 \section{JCorrelat}\label{sec_jcorrelat}
 
-In Abbildung \ref{pic:jcorrelat} \cite[47]{reissmann} ist der schematische Aufbau von 
+In Abbildung \ref{pic:jcorrelat} \cite{reissmann} ist der schematische Aufbau von 
 JCorrelat dargestellt, ein Prototyp der die Anforderungen aus Abschnitt 
 \ref{anforderungen} erfüllen soll. Die hinzugefügten Nummern dienen der Übersichtlichkeit 
 im weiteren Erklärungsverlauf.   
@@ -64,7 +64,7 @@ Als Ereignisquelle und als Grundlage für neu generierte Meldungen wird das
 Syslog-Protokoll verwendet. Es ist das meist verbreitete Log-Format und wurde 
 bereits in RFC 3164 standardisiert, jedoch sieht dieser Standard keine strukturierten 
 Daten (\texttt{key $\Rightarrow$ value}) innerhalb einer Syslog-Nachricht vor. 
-Erst mit RFC 5424 \cite{rfc5424} wurde diese Funktionalität hinzugefügt.
+Erst mit\linebreak RFC 5424 \cite{rfc5424} wurde diese Funktionalität hinzugefügt.
 
 \begin{table}[ht]
     \caption{Aufbau RFC 5424}
@@ -123,17 +123,18 @@ Tabelle \ref{table:rfc5424} zeigt den Aufbau eines Syslog-Paketes nach RFC 5424 
 Abbildung \ref{log_example} die dazugehörige RFC 5424 konforme Nachricht. Die für 
 die weitere Verwendung wichtigsten Felder wurden grün markiert. Dazu zählt der 
 Schweregrad (\textit{severity}), wobei 0 (\texttt{Emergency}) den höchsten und 7 
-(\texttt{DEBUG}) den niedrigsten Schweregrad darstellt. Das \textit{tag}-Feld, das zum 
-Beispiel die Herkunft (Programm) und die zugehörige \textit{process ID} beinhalten kann. 
+(\texttt{DEBUG}) den niedrigsten Schweregrad darstellt. Außerdem das \textit{tag}-Feld, 
+das zum Beispiel die Herkunft (Programm) und die zugehörige \textit{process ID} 
+beinhalten kann. 
 Am wichtigsten ist das \textit{structured data}-Feld, welches mit beliebigen 
 strukturierten Daten versehen werden darf.
 
 \subsection{Normalisierung von Syslog-Meldungen}\label{syslog-konsolidierung}
 
-Diese Sektion erläutert Punkt \textbf{2} in Abbildung \ref{pic:jcorrelat}, es handelt 
+Diese Sektion erläutert Punkt \textbf{2} in Abbildung \ref{pic:jcorrelat}. Es handelt 
 sich um den zentralen Syslog-Server. Als Software kommt die Open Source - Lösung 
 \textit{rsyslog}\footnote{\url{https://rsyslog.com}} zum Einsatz. \textit{rsyslog} ist 
-RFC 5424 konform, äußerst performant und durch Module erweiterbar. Eben eines dieser 
+RFC 5424 konform, äußerst performant und durch Module erweiterbar. Eines dieser 
 Module kommt auch im hier vorgestellten Korrelationssystem zum Einsatz: 
 \textit{liblognorm}, mittlerweile ein fester Bestandteil von \textit{rsyslog}.\\ 
 
@@ -172,8 +173,8 @@ neue Meldung mit einem neuen \textit{syslog-tag} names \texttt{SSHFAILURE} oder
 
 \textit{liblognorm} normalisiert und serialisiert Daten, die aus verschiedenen Quellen 
 stammen und unterschiedlich kodiert sein können zu neuen Nachrichten. Damit werden 
-Redundanzen aus den Meldungen entfernt und eindeutige \textit{syslog-tags} zu schnelleren 
-Identifizierung durch die Korrelationsinstanz gesetzt. 
+Redundanzen aus den Meldungen entfernt und eindeutige \textit{syslog-tags} zur 
+schnelleren Identifizierung durch die Korrelationsinstanz gesetzt. 
 
 
 \newpage
@@ -196,10 +197,11 @@ Nachricht wird mit einem \textit{syslog-tag} versehen und zur weiteren Analyse u
 Speicherung  weitergeleitet. \textit{Drools-Fusion} behält dazu alle relevanten 
 Syslog-Meldungen in einer \textit{in memory engine} vor und verwendet das Prinzip der 
 \textit{sliding windows} um Zusammenhänge zu erkennen. Abbildung \ref{pic:drools} 
-\cite[70]{drools-slide} demonstriert die Funktionsweise der \textit{sliding-windows}, ein 
+\cite[Folie 70]{drools-slide} demonstriert die Funktionsweise der 
+\textit{sliding-windows}, ein 
 Quader ist im hier verwendeten Beispiel eine relevante Syslog-Meldung, die Fenster 
 analysieren immer eine gewisse Anzahl an Meldungen aus verschiedenen Quellen, die in 
-einem bestimmtem Zeitfenster erzeugt wurden. Erfüllt das \textit{joined-window} dann den 
+einem bestimmten Zeitfenster erzeugt wurden. Erfüllt das \textit{joined-window} dann die 
 Bedingungen in der definierten Regel, kann ein Event ausgelöst werden.    
 
 \begin{figure}[htbp]
@@ -215,15 +217,15 @@ Angriff zu erkennen, muss zuerst eine Brute-Force-Attacke erkannt werden, dazu d
 Regel \texttt{SSH brute-force attempt} (Anhang: \ref{app:drools-warning}). Die Regel 
 untersucht nur Syslog-Meldungen die mit dem \textit{syslog-tag} \texttt{SSHFAILURE} 
 versehen wurden. Es wird ein Event ausgelöst, wenn innerhalb von einer Minute vom 
-gleichen Quell-Host und dessen verwendeten Benutzernamen 10 oder mehr fehlgeschlagene 
-Login-versuche erfolgen. Als Event wird in diesem Fall eine neue Syslog-Meldung verfasst 
+gleichen Quell-Host und dessen verwendeten Benutzernamen zehn oder mehr fehlgeschlagene 
+Login-Versuche erfolgen. Als Event wird in diesem Fall eine neue Syslog-Meldung verfasst 
 und mit dem Schweregrad \texttt{WARNING} und dem \textit{syslog-tag} \texttt{BRUTEFORCE} 
 versehen. Die Meldung kann zum Beispiel persistent gespeichert werden (mehr dazu in 
 Abschnitt \ref{nosql}) und an einen Monitor weitergeleitet werden.\\
 
 Zur Erkennung einer erfolgreichen SSH Brute-Force-Attacke existiert ebenfalls eine 
 beispielhafte Regel (Anhang: \ref{app:drools-emergency}). Die Regel \texttt{Successful 
-SSH brute-force attack} löst einen Event aus, wenn innerhalb von 10 Sekunden nach dem 
+SSH brute-force attack} löst einen Event aus, wenn innerhalb von zehn Sekunden nach dem 
 Auftreten von Meldungen mit dem \textit{syslog-tag} \texttt{BRUTEFORCE} und 
 \texttt{SSHFAILURE} und des zugehörigen Host und dessen verwendeten Benutzernamen, eine 
 Meldung mit dem \textit{syslog-tag} \texttt{SSHSUCCSESS} auftritt, welche vom 
@@ -231,7 +233,7 @@ gleichen Host und aus der dazugehörigen Menge der Benutzernamen stammt.
 Die generierte Syslog-Meldung wird mit dem gewichtigsten Schweregrad \texttt{EMERGENCY} 
 und dem \textit{syslog-tag} \texttt{INCIDENT} markiert.\\
 
-Mit diesem beiden Regeln ist es \textit{JCorrelat} unter der Zuhilfenahme von 
+Mit diesen beiden Regeln ist es \textit{JCorrelat} unter der Zuhilfenahme von 
 \textit{Drools-Fusion} möglich den einen erfolgreichen Login unter tausenden 
 Loginversuchen innerhalb einer Brute-Force-Attacke zu identifizieren.
 
@@ -250,28 +252,28 @@ Daten ständig ändern und Dienste können hinzukommen oder wegfallen.\\
 Ein erster Ansatz wäre die Speicherung der normalisierten Daten (Abschnitt 
 \ref{syslog-konsolidierung}) in einer relationalen Datenbank. Aufgrund der dynamischen 
 Natur der Daten müsste für eine effiziente Verarbeitung das Schema einer solchen 
-Datenbank stetig angepasst werden, dieser Aufwand ist enorm und nicht Zielführend.\\
+Datenbank stetig angepasst werden. Dieser Aufwand ist enorm und nicht Zielführend.\\
 Im Gegensatz zum relationalen Ansatz wird bei \textit{NoSQL}-Datenbanken (Not only SQL) 
 kein oder nur ein minimales Schema gespeichert. Somit erlaubt dieses Konzept zu jeder 
 Zeit eine Änderung der Datenstruktur. Darüber hinaus lassen sich 
 \textit{NoSQL}-Datenbanken über viele Instanzen hinweg skalieren und liefern Daten sehr 
-schnell aus. Allerdings mit den Nachteil, dass nicht auf allen Systemen zeitgleich die 
+schnell aus. Allerdings mit dem Nachteil, dass nicht auf allen Systemen zeitgleich die 
 aktuellsten Daten zur Verfügung stehen.\\
 
 Grundsätzlich lassen sich drei Konzepte von \textit{NoSQL}-Datenbanken identifizieren. 
-Zuerst sind die einfachen \textbf{\emph{key-value}}-Implementierungen zu nennen, diese 
+Zuerst sind die einfachen \textbf{\emph{key-value}}-Implementierungen zu nennen. Diese 
 Datenbanken sind mit Abstand die schnellsten, da die Werte lediglich als \textit{BLOB} 
-(Binary Large OBject) abgespeichert werden und somit nicht interpretiert werden. Damit 
+(Binary Large OBject) abgespeichert und somit nicht interpretiert werden. Damit 
 sind die Werte nicht durchsuchbar, umso einfacher ist dafür die zugrunde liegende 
 Programmierschnittstelle.\\
 
 Die \textbf{\emph{column-oriented data stores}}-Lösungen speichern die Daten in Tabellen, 
-ähnlich wie relationale-Lösungen, jedoch werden die Zeilen einer Tabelle in sogenannte 
+ähnlich wie relationale-Lösungen. Jedoch werden die Zeilen einer Tabelle in sogenannte 
 shards (Scherben) unterteilt und die Spalten in Spaltengruppen, jeweils Abhängig von 
 ihrem Schlüssel. Damit ist das Tabellenschema beliebig erweiterbar, aber eine 
 Volltextsuche bietet diese Lösung nicht.\\
 
-Davon abweichend arbeiten die \textbf{\emph{document-based data stores}}, sie speichern 
+Davon abweichend arbeiten die \textbf{\emph{document-based data stores}}. Sie speichern 
 die Daten in \textit{documents} ab, welche eine Menge an beliebigen Objekten mit einer 
 unterschiedlichen Anzahl an Attributen beschreiben. Objekte dürfen jederzeit neu 
 angelegt werden und die Art und Anzahl ihrer \textit{key-value}-Paare ist nicht von 
@@ -286,7 +288,8 @@ persistente Speicherung direkt an \textit{elasticsearch}. Monitoring- und
 Visualisierungssysteme können nun periodisch auf diese Daten zugreifen und kritische 
 Ereignisse melden und visualisieren. Eine rudimentäre Visualisierung des SSH Brute-Force 
 -Szenarios wurde in \cite{reissmann} veröffentlicht (Abbildung \ref{pic:logvis}). 
-Alternative Möglichkeiten zu Visualisierung werden in Abschnitt \ref{ausblick} erläutert. 
+Alternative Möglichkeiten zur Visualisierung werden in Abschnitt \ref{ausblick} 
+erläutert. 
 
 \begin{figure}[htbp]
     \caption{Einfache Visualisierung durch JCorrelat}
@@ -305,12 +308,12 @@ zugreifen können (\textit{distributed memory}).
 Jedoch existieren laut \cite{reissmann} dafür keine 
 leistungsfähigen OpenSource-Lösungen, sodass eine Partitionierung nach Quellanwendung 
 empfohlen wird. Somit ist nur eine \textit{JCorrelat}-Instanz für eine Anwendung 
-zuständig. Es besteht ein Zusammenhang zwischen benötigten Arbeitsspeicher und der Größe 
-des Betrachtungsfensters, benötigt eine Regel ein längeres Betrachtungsfenster desto mehr 
+zuständig. Es besteht ein Zusammenhang zwischen benötigtem Arbeitsspeicher und der Größe 
+des Betrachtungsfensters. Benötigt eine Regel ein längeres Betrachtungsfenster umso mehr 
 Meldungen müssen im Arbeitsspeicher gehalten werden.\\
 Untersucht wird auch die Geschwindigkeit von \textit{rsyslog}, das ohne Normalisierung 
 auf gängiger Hardware bei einer Syslog-Nachrichtengröße von 512 Byte über 200.000 
-Syslog-Meldungen untersuchen kann und damit die maximale Anzahl an Nachrichten auf einer 
+Syslog-Meldungen untersuchen und damit die maximale Anzahl an Nachrichten auf einer 
 1 GBit-Netzwerkschnittstelle verarbeiten kann.\\
 
 Für den Benchmark wurde mithilfe der Software 
