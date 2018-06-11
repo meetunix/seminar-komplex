@@ -1,5 +1,6 @@
 *.log
 *.swp
+*.~lock*
 
 #some packages
 *.7z
@@ -24,6 +25,13 @@
 *.vrb
 *.pygtex
 _minted*
+*.bbl
+*.blg
+*.bbg
+*.glsdefs
+*.lof
+*.lot
+*.txss
 
 
 

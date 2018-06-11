@@ -1,0 +1,166 @@
+\documentclass[a4paper,10pt]{scrreprt}
+\usepackage[utf8]{inputenc}
+\usepackage{minted}
+\usepackage{ngerman}
+\usepackage{color}
+\usepackage{colortbl}
+\usepackage[dvipsnames]{xcolor}
+\usepackage{fancyhdr}
+\usepackage{lastpage}
+\usepackage{geometry}
+\usepackage{graphics}
+\usepackage[pdftex]{graphicx}
+\usepackage{hyperref}
+
+%\usepackage{setspace}
+%\onehalfspacing      
+
+\geometry{inner=2.5cm,outer=2.5cm,top=3cm,bottom=3cm}
+
+\definecolor{shadecolor}{gray}{.92}
+
+%%% Einrückabstand Absatz:
+\parindent 0pt
+
+%%% Kopf und Fußzeilen
+\pagestyle{fancy}
+\fancyhead{} % lösche Kopfzeile
+\fancyhead[RO,LE]{Martin Steinbach}
+\fancyhead[LO,RE]{Service und Security Monitoring}
+\fancyfoot{} % lösche Fußzeile
+%\fancyfoot[LE,RO]{\thepage \hspace*{0.1cm} von\hspace*{0.2cm}\pageref{LastPage}}
+\fancyfoot[LE,RO]{\thepage}
+\fancyfoot[LO,CE]{Seminar Aufbereitung und Auswertung komplexer Daten}
+\fancyfoot[CO,RE]{}
+\renewcommand{\headrulewidth}{0.4pt}
+\renewcommand{\footrulewidth}{0.4pt}
+
+\usepackage{hyperref}
+\hypersetup{
+	pdftitle={Service- and Security Monitoring },
+	pdfauthor={Martin Steinbach},
+	pdfkeywords={Seminar, Rostock, SoSe 2018, 2018},
+	pdfsubject={Seminar Aufbereitung und Auswertung komplexer Daten},
+	pdfcreator={Martin Steinbach},
+	citecolor=blue,
+	hypertexnames=false,
+	%linktocpage,
+	pdfpagelabels,
+	plainpages=false,
+	backref,
+	urlcolor=blue,
+	menucolor=red,
+	linkcolor=black,
+	colorlinks=true,
+	bookmarksnumbered,
+	%pdffitwindow
+}
+%url linebreak after -
+\def\UrlBreaks{\do\/\do-}
+
+%\renewcommand{\thesection}{\Roman{section}} 
+%\renewcommand{\thesubsection}{\thesection.\Roman{subsection}}
+
+\usemintedstyle{}
+
+\title{Service and Security Monitoring}
+\author{Martin Steinbach}
+
+\date{\today}
+
+\begin{document}
+\thispagestyle{empty}
+\setcounter{page}{1}
+\pagenumbering{roman}
+\begin{center}
+  
+  {\Large \textsc{Seminararbeit}
+  
+  \vspace{4.25cm}
+  
+  {\fontsize{22}{22}\selectfont Service und Security-Monitoring\\}
+  \vspace{0.75cm}
+  {\fontsize{20}{20}\selectfont Seminar:\\\vspace{0.2cm} Aufbereitung und Auswertung 
+  komplexer Daten}
+}
+  
+  \vspace{7.25cm}
+  
+  {\Large Martin Steinbach
+    
+    \vspace{.15cm}
+    
+    Juni 2018}
+  
+  \vspace{1.5cm}
+  
+  
+  \includegraphics[scale=0.5]{img/siegel}
+  
+  \vspace{0.5cm}
+  
+  \rule{.7\textwidth}{.40pt}
+  
+  \vspace{.5cm}
+  
+  {\large\textsc{universität Rostock}}
+    
+    \vspace{.15cm}
+        
+\end{center}
+\quad  \addtocounter{page}{-1}
+\newpage
+
+\vspace*{\fill}
+\textbf{Exzerpt}\\\\
+    Servicemonitoring ist eine wichtige Voraussetzung um eine zuverlässige 
+    IT-Infrastruktur zu betreiben. Monitoring ist auch geeignet um IT-Sicherheitskritische
+    Ereignisse zu identifizieren und adäquat auf diese zu reagieren. Die vorliegende
+    Arbeit bietet eine Einführung in die Thematik der Dienstüberwachung und stellt die
+    beiden Überwachungsformen Aktive- und Passive-Überwachung vor. Es wird zudem
+    die Frage geklärt, warum Servicemonitoring auch gleichzeitig Securitymonitoring ist.
+    Anschließend wird anhand eines existierenden Prototypen aufgezeigt, wie eine 
+    Korrelation von Ereignissen in Cloud-Umgebungen realisiert werden kann. In Abschnitt 
+    \ref{ausblick} wird eine mögliche Visualisierungslösung für die korrelierten Daten 
+    vorgestellt. 
+    Die letzte Sektion zieht ein Fazit und erläutert zukünftige Ideen für die Entwicklung 
+    des Prototypen. 
+\vspace*{\fill}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\tableofcontents
+\thispagestyle{fancy}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\cleardoubleemptypage
+\setcounter{page}{1}
+\pagenumbering{arabic}
+\include{01_einf}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\include{02_jcorrelat}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\include{03_ausbl}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\include{04_fazit}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\setcounter{page}{3}
+\pagenumbering{Roman}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\bibliography{bib/bibo.bib}{}
+\bibliographystyle{unsrt}
+\thispagestyle{fancy}
+\addcontentsline{toc}{chapter}{Literaturverzeichnis}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%lot und lof auf einer Seite
+\listoffigures
+\begingroup
+\let\clearpage\relax
+\listoftables
+\endgroup
+\thispagestyle{fancy}
+%lot und lof im Inhaltsverzeichnis
+\addcontentsline{toc}{chapter}{Abbildungsverzeichnis}
+\addcontentsline{toc}{chapter}{Tabellenverzeichnis}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\include{05_appendix}
+
+\end{document}
