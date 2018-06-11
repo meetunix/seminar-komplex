@@ -8,11 +8,11 @@ eine \textit{JCorrelat}-Instanz verwendet wird. Weniger Verwaltungsaufwand würd
 allerdings die Verwendung einer (eventuell auch proprietären) 
 \textit{distributet-memory}-Lösung bieten, da dann die \textit{Drools-Fusion}-Regeln 
 global platziert werden könnten und jede \textit{Drools}-Instanz auf den selben Daten 
-operieren kann. Arbeitsspeicher ist auch der limitierende Faktor des Korrelationssystems, 
-je mehr Arbeitsspeicher zur Verfügung steht umso mehr und größere Betrachtungsfenster 
-kann \textit{Drools-Fusion} verwenden und so bessere Ergebnisse erzielen.\\
+operieren könnte. Arbeitsspeicher ist der limitierende Faktor des Korrelationssystems, je 
+mehr Arbeitsspeicher zur Verfügung steht umso mehr und größere Betrachtungsfenster kann 
+\textit{Drools-Fusion} verwenden und so bessere Ergebnisse erzielen.\\
 Wie fortlaufend am Beispiel aus Sektion \ref{szenario} gezeigt, ist der Prototyp in der 
-Lage Sicherheitskritische Ereignisse sicher zu identifizieren und eignet sich so bestens 
+Lage sicherheitskritische Ereignisse sicher zu identifizieren und eignet sich so bestens 
 für die Überwachung von großen IT-Umgebungen. Anzumerken ist allerdings, dass die 
 Zeitfenster in den Beispielregeln (Anhang: Abbildung \ref{app:drools-warning} und 
 Abbildung \ref{app:drools-emergency}) recht willkürlich gewählt wurden und in 
@@ -24,7 +24,7 @@ der damit verbundenen hohen Ausführungsgeschwindigkeit der Korrelation auch zu 
 stark reduzierten Speicherbedarf für die persistente Speicherung. Durch die Wahl, die 
 normalisierten und korrelierten Daten in \textit{elasticsearch} abzuspeichern, bieten 
 sich vielfältige Möglichkeiten der Auswertung und Visualisierung an. So Könnten bereits 
-bestehende Monitoringsysteme um Plugins erweitert werden, welche die zuvor erstellten 
+bestehende Monitoringsysteme um Module erweitert werden, welche die zuvor erstellten 
 Ereignisse periodisch abfragen und somit alarmieren können.\\
 
 Auch eine Korrelation von weiteren Daten ist realisierbar, so könnten die 
@@ -34,8 +34,8 @@ Korrelationsgenauigkeit erreicht werden soll und die Korrelationsgeschwindigkeit
 Rolle spielt, könnte \textit{JCorrelat} auch auf den Datenbestand in 
 \textit{elasticsearch} zugreifen.\\
 Um nicht alle Regeln (je Dienst) einzeln konfigurieren zu müssen, soll das Ziel sein, 
-\textit{JCorrelat} mit Vorlagen konfigurieren zu können. Damit könnten neu hinzukommende 
-Dienste einer automatischen Korrelation unterzogen werden. Darüber hinaus wäre auch eine 
-Integration in \textit{kubernetes}\footnote{\url{https://kubernetes.io/}}, 
+\textit{JCorrelat} mit Hilfe von Vorlagen konfigurieren zu können. Damit könnten neu 
+hinzukommende Dienste einer automatischen Korrelation unterzogen werden. Darüber hinaus 
+wäre auch eine Integration in \textit{kubernetes}\footnote{\url{https://kubernetes.io/}}, 
 \textit{openstack}\footnote{\url{https://www.openstack.org/}} oder dem ELK-Stack 
 (Abschnitt \ref{ausblick}) erstrebenswert. 

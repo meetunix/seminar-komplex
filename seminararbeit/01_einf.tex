@@ -24,9 +24,11 @@ Beziehung mit dem Servicemonitoring - Begriff gebracht.\\\\
 \underline{\textbf{Vertraulichkeit}}\\\\
 Das Ziel der Vertraulichkeit sagt aus, dass der Zugriff auf Daten ausschließlich von
 autorisierten Nutzern erfolgen darf, egal in welchem Modus. Erreicht wird das Ziel zum
-Beispiel durch Zugriffsrechte\footnote{Unabhängig von der Umsetzungsstrategie, wie z.B. 
-Mandatory Access Contro (MAC) oder Discretionary Access Control(DAC)} und vor allem 
-durch Verschlüsselung.\\
+Beispiel durch Zugriffsrechte, wie z.B. Mandatory Access Control (MAC) und 
+\footnote{Zugriffkontrollstrategie aus systemweiten Regeln, 
+bei der nicht nur die Nutzeridentität ein Rolle spielt.} oder Discretionary Access 
+Control(DAC)\footnote{Zugriffskontrollstrategie, bei der lediglich nie Nutzeridentität 
+eine Rolle spiel (übliches Rechtesystem).} und vor allem durch Verschlüsselung.\\
 
 Die Frage, ob sich Vertraulichkeit überwachen lässt, ist nur teilweise beantwortbar.
 Stellt man sich ein System vor auf dem ein nicht autorisierter Nutzer Zugriff auf
@@ -36,9 +38,10 @@ jedoch ein autorisiertes Konto durch einen nicht autorisierten Nutzer kompromitt
 gestaltet sich die Entdeckung dieses Ereignisses schwieriger. Ob es sich in diesem Fall 
 um einen erlaubten Zugriff des tatsächlichen Nutzers oder einen nicht erlaubten Zugriff
 handelt kann nur unter der Zuhilfenahme weiterer Information geklärt werden.
-Zum Beispiel könnte die Quelle (Kapitel \ref{elk}), von der aus sich der Nutzer Zugriff 
-verschafft hat, miteinbezogen werden. Auch die Korrelation mit Zeitdaten, an denen sich 
-der zugriffsberechtigte Nutzer einloggt, können zur Klärung hinzugezogen werden.\\\\
+Zum Beispiel könnte die Quelle (Kapitel \ref{ausblick}), von der aus sich der Nutzer 
+Zugriff verschafft hat, miteinbezogen werden. Auch die Korrelation mit Zeitdaten, an 
+denen sich der zugriffsberechtigte Nutzer einloggt, können zur Klärung hinzugezogen 
+werden.\\\\
 
 \underline{\textbf{Verfügbarkeit}}\\\\
 Ob ein Dienst Verfügbar ist, wird dadurch geklärt, ob der Zugriff auf Informationen
@@ -103,7 +106,8 @@ Es lassen sich zwei verschiedene Überwachungsformen identifizieren. Die aktive
 Überwachung, bei der aktiv Status und Messwerte von Diensten erfragt werden, sowie die 
 passive Überwachung, bei der die Dienste selbstständig Meldungen an einen zentralen 
 Punkt, den Monitor, senden. Unter einem Dienst wird in diesen Beispielen nicht nur ein 
-\textit{service} oder \textit{daemon} sondern jegliche Entität, deren Status Messbar ist, 
+\textit{service} oder \textit{daemon}\footnote{Bezeichnung eines Dienstes auf 
+Unix-basierenden Systemen.} sondern jegliche Entität, deren Status Messbar ist, 
 verstanden.
 
 \subsection{Aktive Überwachung}
@@ -189,7 +193,8 @@ Dienste. Tabelle \ref{table:aktiv} listet einige Beispiele für die jeweilige Kl
     \texttt{TCP/UDP} & ist bestimmter \emph{port} erreichbar\\
     Anwendungsprotokolle & Login möglich / Referenzdaten abrufbar / Rückgabewerte 
     Testroutinen\\
-    \texttt{SNMP} & Abfrage beliebiger und zum Teil standardisierter Messwerte\\
+    \texttt{SNMP} & Abfrage beliebiger und 
+    zum Teil standardisierter Messwerte\\
     \hline
 \end{tabular}
 
@@ -211,5 +216,8 @@ ausgewertet, welche durch Dienste selbst generiert werden oder aber durch eine S
 welche den Dienst lokal überwacht. Es erfolgt keine Abfrage bei den Diensten. Der 
 zentrale Punkt, welcher auch die Auswertung übernimmt, bleibt passiv und empfängt 
 lediglich Meldungen. Am häufigsten sind diese Meldungen LOG-Meldungen, generiert von 
-einem LOG-System. Aber auch SNMP-Traps fallen unter diese Kategorie, daher auch die Wahl 
-der Funktionsbezeichner in Abbildung \ref{passiv}.
+einem LOG-System. Aber auch SNMP\footnote{Simple Network Management Protocol: 
+Ermöglicht eine plattformunabhängige Überwachung verschiedenster 
+Endgeräte.}-Traps\footnote{SNMP-Trap: aktive Benachrichtigung des Monitors durch ein 
+Endgerät/Dienst.} fallen unter diese Kategorie, daher auch die Wahl der 
+Funktionsbezeichner in Abbildung \ref{passiv}.
